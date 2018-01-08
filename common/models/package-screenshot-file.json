@@ -1,0 +1,27 @@
+{
+  "name": "PackageScreenshotFile",
+  "plural": "PackageScreenshotFiles",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "width": {
+      "type": "number",
+      "required": true
+    },
+    "height": {
+      "type": "number",
+      "required": true
+    },
+    "size": {
+      "type": "number",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

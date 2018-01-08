@@ -1,0 +1,172 @@
+<style>
+  .ql-snow b, strong {
+    font-weight: bold !important;
+  }
+
+  .page-main .list-group {
+    margin: 0;
+    padding-right: 15px;
+  }
+
+  .list-group .avatar {
+    width: 62px;
+  }
+
+  .list-group .card {
+    margin-bottom: 15px;
+  }
+
+  .list-group .card-block {
+    -webkit-transition: border .2s linear, color .2s linear, width .2s linear, background-color .2s linear;
+    -o-transition: border .2s linear, color .2s linear, width .2s linear, background-color .2s linear;
+    transition: border .2s linear, color .2s linear, width .2s linear, background-color .2s linear;
+  }
+
+  .list-group .card-block:hover {
+    cursor: pointer;
+    background-color: #eee;
+  }
+
+  .list-group .list-group-item, .list-group .list-group-item:hover {
+    background-color: transparent;
+  }
+
+  .list-inline {
+    height: 25px;
+  }
+
+  .list-inline li a:hover {
+    text-decoration: none;
+    color: #76838f !important;
+  }
+
+  .detail {
+    background-color: #a2caee !important;
+  }
+
+  .page-content {
+    height: 100%;
+    overflow-y: auto;
+  }
+
+
+</style>
+
+<div class="page-content container-fluid" *ngIf="package">
+  <div class="row">
+    <div class="col-lg-3">
+      <!-- Page Widget -->
+      <div class="card card-shadow text-center">
+        <div class="card-block">
+          <h4 class="profile-user">{{package.name}}</h4>
+          <p>{{package.shortDescription}}</p>
+        </div>
+        <div class="card-footer">
+          <div class="row no-space">
+            <div class="col-12">
+              <strong class="profile-stat-count">{{package.latestVersion.downloadCount}}</strong>
+              <span>Downloads</span>
+            </div>
+          </div>
+        </div>
+        <!-- End Page Widget -->
+      </div>
+    </div>
+    <div class="col-lg-9">
+      <!-- Panel -->
+      <div class="panel">
+        <div class="panel-body nav-tabs-animate nav-tabs-horizontal" data-plugin="tabs">
+          <ul class="nav nav-tabs nav-tabs-line" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" data-toggle="tab" href="#description" aria-controls="description" role="tab"
+                 aria-expanded="true">
+                Description
+              </a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" data-toggle="tab" href="#versions" aria-controls="versions" role="tab"
+                 aria-expanded="false">
+                Versions
+              </a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" data-toggle="tab" href="#comments" aria-controls="comments" role="tab"
+                 aria-expanded="false">
+                Comments
+              </a>
+            </li>
+            <li class="nav-item dropdown" style="display: none;">
+              <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#" aria-expanded="false">Menu </a>
+              <div class="dropdown-menu" role="menu">
+                <a class="dropdown-item" data-toggle="tab" href="#description" aria-controls="versions" role="tab">Description
+                </a>
+                <a class="dropdown-item" data-toggle="tab" href="#versions" aria-controls="versions" role="tab">Versions
+                </a>
+                <a class="dropdown-item" data-toggle="tab" href="#comments" aria-controls="comments"
+                   role="tab">Comments</a>
+              </div>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="description" role="tabpanel" aria-expanded="true">
+              <br>
+              <quill-editor #editor [(ngModel)]="detailedPackageDescription" [style]="{height: '200px'}">
+                <!--<div quill-editor-toolbar>-->
+                  <!--<span class="ql-formats">-->
+                    <!--<button class="ql-bold" [title]="'Bold'"></button>-->
+                    <!--<button class="ql-italic" [title]="'Bold'"></button>-->
+                    <!--<button class="ql-underline" [title]="'Bold'"></button>-->
+                  <!--</span>-->
+                  <!--<span class="ql-formats">-->
+                    <!--<select class="ql-align" [title]="'Aligment'">-->
+                      <!--<option selected></option>-->
+                      <!--<option value="center"></option>-->
+                      <!--<option value="right"></option>-->
+                      <!--<option value="justify"></option>-->
+                    <!--</select>-->
+                  <!--</span>-->
+                <!--</div>-->
+              </quill-editor>
+              <br>
+              <button type="button" (click)="savePackageDescription()" class="btn btn-block btn-primary">Save</button>
+            </div>
+            <div class="tab-pane" id="versions" role="tabpanel" aria-expanded="false">
+              <div class="example table-responsive">
+                <table class="table">
+                  <thead>
+                  <tr>
+                    <th>Version</th>
+                    <th>Size</th>
+                    <th>Downloads</th>
+                    <th>Rating</th>
+                    <th>Visibility</th>
+                  </tr>
+                  </thead>
+                  <tbody *ngIf="package.versions">
+                  <tr *ngFor="let packageVersion of package.versions">
+                    <td><a routerLink="version/{{packageVersion.id}}">{{packageVersion.version}}</a></td>
+                    <td>{{packageVersion.file.size}}</td>
+                    <td>{{packageVersion.downloadCount}}</td>
+                    <td>
+                      <div class="rating" data-score="4" data-number="5" data-read-only="true"
+                           data-plugin="rating"></div>
+                    </td>
+                    <td>
+                      <span class="badge badge-success" *ngIf="packageVersion.visible == true">visible</span>
+                      <span class="badge badge-danger" *ngIf="packageVersion.visible == false">hidden</span>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="tab-pane" id="comments" role="tabpanel" aria-expanded="false">
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Panel -->
+    </div>
+  </div>
+</div>

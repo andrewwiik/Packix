@@ -1,0 +1,27 @@
+{
+  "name": "PackageScreenshot",
+  "plural": "PackageScreenshots",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "description": {
+      "type": "string"
+    },
+    "packageId": {
+      "type": "string",
+      "required": true
+    },
+    "images": {
+      "type": [
+        "object"
+      ]
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

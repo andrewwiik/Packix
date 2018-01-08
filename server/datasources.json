@@ -1,0 +1,37 @@
+{
+  "db": {
+    "host": "${MONGODB_HOST}",
+    "port": 27017,
+    "database": "${MONGODB_DATABASE}",
+    "password": "${MONGODB_PASSWORD}",
+    "name": "db",
+    "user": "${MONGODB_USERNAME}",
+    "connector": "mongodb"
+  },
+  "files": {
+    "host": "${MONGODB_HOST}",
+    "port": 27017,
+    "database": "${MONGODB_DATABASE}",
+    "password": "${MONGODB_PASSWORD}",
+    "name": "files",
+    "user": "${MONGODB_USERNAME}",
+    "connector": "loopback-component-storage-deb-gridfs"
+  },
+  "paypal": {
+    "name": "paypal",
+    "clientID": "${PAYPAL_CLIENT_ID}",
+    "clientSecret": "${PAYPAL_CLIENT_SECRET}",
+    "connector": "loopback-component-paypal",
+    "mode": "${PAYPAL_MODE}",
+    "payment": {
+      "intent": "sale",
+      "redirect_urls": {
+        "return_url": "return_url",
+        "cancel_url": "cancel_url"
+      },
+      "payer": {
+        "payment_method": "paypal"
+      }
+    }
+  }
+}

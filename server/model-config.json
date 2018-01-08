@@ -1,0 +1,104 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../common/models",
+      "./models",
+      "./node_modules/loopback-component-passport/lib/models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "./node_modules/loopback-ds-computed-mixin/lib",
+      "./node_modules/loopback-ds-timestamp-mixin",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "Device": {
+    "dataSource": "db",
+    "public": false
+  },
+  "User": {
+    "dataSource": "db",
+    "public": false,
+    "attached": "extend-models/user.js"
+  },
+  "AccessToken": {
+    "dataSource": "db",
+    "public": false
+  },
+  "UserCredential": {
+    "dataSource": "db",
+    "public": false
+  },
+  "UserIdentity": {
+    "dataSource": "db",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "db",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "db",
+    "public": false
+  },
+  "Role": {
+    "dataSource": "db",
+    "public": false
+  },
+  "BasePackage": {
+    "dataSource": null,
+    "public": false
+  },
+  "Package": {
+    "dataSource": "db",
+    "public": true
+  },
+  "ExternalPackage": {
+    "dataSource": null,
+    "public": false
+  },
+  "Container": {
+    "dataSource": "files",
+    "public": false
+  },
+  "PackageFile": {
+    "dataSource": "db",
+    "public": true
+  },
+  "PackageVersion": {
+    "dataSource": "db",
+    "public": true
+  },
+  "Section": {
+    "dataSource": "db",
+    "public": true
+  },
+  "PackageDownload": {
+    "dataSource": "db",
+    "public": true
+  },
+  "DeviceLinkNonce": {
+    "dataSource": "db",
+    "public": false
+  },
+  "PayPal": {
+    "dataSource": "paypal",
+    "public": false
+  },
+  "PackagePurchase": {
+    "dataSource": "db",
+    "public": false
+  },
+  "PackageScreenshot": {
+    "dataSource": "db",
+    "public": true
+  },
+  "PackageScreenshotFile": {
+    "dataSource": "db",
+    "public": true
+  }
+}

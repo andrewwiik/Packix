@@ -1,0 +1,146 @@
+{
+  "name": "Package",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "Computed": {
+      "properties": {
+        "isPaid": "computeIsPaid"
+      }
+    },
+    "TimeStamp": {
+      "createdAt": "createdOn",
+      "updatedAt": "updatedOn",
+      "silenceWarnings": false
+    }
+  },
+  "scope": {
+    "include": [
+      "latestVersion"
+    ]
+  },
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "identifier": {
+      "type": "string"
+    },
+    "shortDescription": {
+      "type": "string",
+      "required": true,
+      "default": "An Awesome Mobile Substrate Tweak"
+    },
+    "minimum": {
+      "type": "string"
+    },
+    "maximum": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "maintainer": {
+      "type": "string"
+    },
+    "visible": {
+      "type": "boolean",
+      "default": true
+    },
+    "stage": {
+      "type": "string",
+      "default": "stable"
+    },
+    "detailedDescription": {
+      "type": "object"
+    },
+    "price": {
+      "type": "number"
+    },
+    "isPaid": {
+      "type": "boolean"
+    },
+    "latestVersionId": {
+      "type": "string"
+    },
+    "screenshotIds": {
+      "type": [
+        "string"
+      ]
+    }
+  },
+  "validations": [],
+  "relations": {
+    "owner": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "accountId"
+    },
+    "versions": {
+      "type": "hasMany",
+      "model": "PackageVersion",
+      "foreignKey": ""
+    },
+    "section": {
+      "type": "belongsTo",
+      "model": "Section",
+      "foreignKey": "sectionId"
+    },
+    "purchases": {
+      "type": "hasMany",
+      "model": "PackagePurchase",
+      "foreignKey": "packageId"
+    },
+    "latestVersion": {
+      "type": "belongsTo",
+      "model": "PackageVersion",
+      "foreignKey": "latestVersionId"
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY",
+      "property": "purchases"
+    },
+    {
+      "accessType": "READ",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "purchases"
+    },
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "upload"
+    },
+    {
+      "accessType": "WRITE",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": "*"
+    }
+  ],
+  "methods": {}
+}

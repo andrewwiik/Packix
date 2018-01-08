@@ -1,0 +1,57 @@
+{
+  "name": "PackagePurchase",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "Computed": {
+      "properties": {
+        "isComplete": "computeIsPurchaseComplete"
+      }
+    },
+    "TimeStamp": {
+      "createdAt": "createdOn",
+      "updatedAt": "updatedOn",
+      "silenceWarnings": false
+    }
+  },
+  "properties": {
+    "paymentId": {
+      "type": "string"
+    },
+    "saleId": {
+      "type": "string"
+    },
+    "isComplete": {
+      "type": "boolean"
+    },
+    "_json": {
+      "type": "object"
+    },
+    "accountId": {
+      "type": "string",
+      "index": true
+    },
+    "packageId": {
+      "type": "string",
+      "index": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "package": {
+      "type": "hasOne",
+      "model": "Package",
+      "foreignKey": "packageId"
+    },
+    "account": {
+      "type": "belongsTo",
+      "model": "User",
+      "foreignKey": "accountId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Section",
+  "plural": "Sections",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true,
+      "default": "An Awesome Section"
+    },
+    "icon-url": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "packages": {
+      "type": "hasMany",
+      "model": "Package",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

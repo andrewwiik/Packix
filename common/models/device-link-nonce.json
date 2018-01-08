@@ -1,0 +1,29 @@
+{
+  "name": "DeviceLinkNonce",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "ip": {
+      "type": "string",
+      "required": false
+    },
+    "accountId": {
+      "type": "string",
+      "required": false,
+      "index": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "accountId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
