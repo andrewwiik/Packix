@@ -1,0 +1,29 @@
+{
+  "frontend_packix": {
+    "NODE_ENV": "production"
+  },
+  "backend_packix": {
+    "API_DATASTORE_TYPE": "MongoDB",
+    "MONGODB_HOST": "",
+    "MONGODB_PORT": 27017,
+    "MONGODB_DATABASE": "",
+    "MONGODB_USERNAME": "",
+    "MONGODB_PASSWORD": "",
+    "FILE_DATASTORE_TYPE": "GridFS",
+    "USE_PAYPAL": "YES",
+    "PAYPAL_MODE": "sandbox",
+    "PAYPAL_CLIENT_ID": "",
+    "PAYPAL_CLIENT_SECRET": "",
+    "USE_GOOGLE_LOGIN": "YES",
+    "GOOGLE_LOGIN_CLIENT_ID": "",
+    "GOOGLE_LOGIN_CLIENT_SECRET": "",
+    "USE_FACEBOOK_LOGIN": "YES",
+    "FACEBOOK_LOGIN_CLIENT_ID": "",
+    "FACEBOOK_LOGIN_CLIENT_SECRET": "",
+    "COOKIE_SECRET": "",
+    "PACKAGES_CONTAINER_NAME": "packages",
+    "NODE_ENV": "production",
+    "HOST_URL": "packix.ioscreatix.com",
+    "ADMIN_EMAIL": ""
+  }
+}
