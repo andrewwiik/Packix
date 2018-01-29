@@ -82,7 +82,6 @@
   }
 
 
-
 </style>
 
 <div class="page-content container-fluid" *ngIf="package">
@@ -90,7 +89,7 @@
     <div class="col-lg-6 col-xl-3 order-xl-1">
       <!-- Page Widget -->
       <div class="card card-shadow text-center">
-        <div class="card-block"style="padding-bottom: 0px;">
+        <div class="card-block" style="padding-bottom: 0px;">
           <h4 class="profile-user">{{package.name}}</h4>
           <p class="user-job">{{packageVersion.version}}</p>
         </div>
@@ -104,10 +103,10 @@
         </div>
         <div class="card-footer page-profile-v2">
           <!--<div class="row no-space">-->
-            <!--<div class="col-12">-->
-              <!--<strong class="profile-stat-count">{{packageVersion.downloadCount}}</strong>-->
-              <!--<span>Downloads</span>-->
-            <!--</div>-->
+          <!--<div class="col-12">-->
+          <!--<strong class="profile-stat-count">{{packageVersion.downloadCount}}</strong>-->
+          <!--<span>Downloads</span>-->
+          <!--</div>-->
           <!--</div>-->
         </div>
         <!-- End Page Widget -->
@@ -115,12 +114,13 @@
     </div>
     <div class="col-lg-12 col-xl-6 order-xl-2">
       <div class="card card-shadow">
-          <div class="input-group input-group-md">
-            <input [(ngModel)]="changeToBeAdded" type="text" class="form-control" name="" placeholder="Add change...">
-            <span class="input-group-btn">
-              <button (click)="addChange()" class="btn btn-primary"><i class="icon wb-plus" aria-hidden="true"></i></button>
+        <div class="input-group input-group-md">
+          <input [(ngModel)]="changeToBeAdded" type="text" class="form-control" name="" placeholder="Add change...">
+          <span class="input-group-btn">
+              <button (click)="addChange()" class="btn btn-primary"><i class="icon wb-plus"
+                                                                       aria-hidden="true"></i></button>
             </span>
-          </div>
+        </div>
       </div>
 
       <div class="panel">
@@ -132,10 +132,12 @@
         </div>
         <div class="panel-body" style="padding:0px;">
           <ul class="list-group list-group-full" [sortablejs]="versionChanges" style="margin-bottom:0px">
-            <li class="list-group-item c-border-top" *ngFor="let change of versionChanges; let i = index" style="padding-left:30px; padding-right:1rem; padding-top:0.6rem; padding-bottom:0.6rem">
+            <li class="list-group-item c-border-top" *ngFor="let change of versionChanges; let i = index"
+                style="padding-left:30px; padding-right:1rem; padding-top:0.6rem; padding-bottom:0.6rem">
               {{change}}
               <span>
-              <button (click)="removeChange(i)" class="btn btn-icon btn-danger btn-outline btn-round btn-xs" style="float: right; transform: scale(0.8,0.8);" type="button" name="button">
+              <button (click)="removeChange(i)" class="btn btn-icon btn-danger btn-outline btn-round btn-xs"
+                      style="float: right; transform: scale(0.8,0.8);" type="button" name="button">
                 <i class="icon icon-xs wb-minus mr-0"></i>
               </button>
             </span>
@@ -143,115 +145,6 @@
           </ul>
         </div>
       </div>
-    </div>
-
-    <div class="col-lg-9">
-      <!-- Panel -->
-      <div class="panel">
-        <div class="panel-body nav-tabs-animate nav-tabs-horizontal" data-plugin="tabs">
-          <ul class="nav nav-tabs nav-tabs-line" role="tablist">
-            <li class="nav-item" role="presentation">
-              <a class="nav-link active" data-toggle="tab" href="#changes" aria-controls="description" role="tab"
-                 aria-expanded="true">
-                Description
-              </a>
-            </li>
-            <li class="nav-item" role="presentation">
-              <a class="nav-link" data-toggle="tab" href="#versions" aria-controls="versions" role="tab"
-                 aria-expanded="false">
-                Downloads
-              </a>
-            </li>
-            <li class="nav-item" role="presentation">
-              <a class="nav-link" data-toggle="tab" href="#comments" aria-controls="comments" role="tab"
-                 aria-expanded="false">
-                Comments
-              </a>
-            </li>
-            <li class="nav-item dropdown" style="display: none;">
-              <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#" aria-expanded="false">Menu </a>
-              <div class="dropdown-menu" role="menu">
-                <a class="dropdown-item" data-toggle="tab" href="#changes" aria-controls="changes" role="tab">Changes
-                </a>
-                <a class="dropdown-item" data-toggle="tab" href="#downloads" aria-controls="downloads" role="tab">Downloads
-                </a>
-                <a class="dropdown-item" data-toggle="tab" href="#comments" aria-controls="comments"
-                   role="tab">Comments</a>
-              </div>
-            </li>
-          </ul>
-          <div class="tab-content">
-            <div class="tab-pane active" id="changes" role="tabpanel" aria-expanded="true">
-              <br>
-              <!--<div [sortablejs]="versionChanges">-->
-                <!--<div *ngFor="let change of versionChanges">{{ change }}</div>-->
-              <!--</div>-->
-
-              <div class="form-group">
-                <div class="input-group">
-                  <input [(ngModel)]="changeToBeAdded" type="text" class="form-control" name="" placeholder="Add change...">
-                  <span class="input-group-btn">
-                      <button (click)="addChange()" class="btn btn-primary"><i class="icon wb-plus" aria-hidden="true"></i></button>
-                    </span>
-                </div>
-              </div>
-              <!--<quill-editor #editor [(ngModel)]="detailedPackageDescription" [style]="{height: '200px'}">-->
-                <!--&lt;!&ndash;<div quill-editor-toolbar>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<span class="ql-formats">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<button class="ql-bold" [title]="'Bold'"></button>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<button class="ql-italic" [title]="'Bold'"></button>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<button class="ql-underline" [title]="'Bold'"></button>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                  <!--&lt;!&ndash;<span class="ql-formats">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<select class="ql-align" [title]="'Aligment'">&ndash;&gt;-->
-                      <!--&lt;!&ndash;<option selected></option>&ndash;&gt;-->
-                      <!--&lt;!&ndash;<option value="center"></option>&ndash;&gt;-->
-                      <!--&lt;!&ndash;<option value="right"></option>&ndash;&gt;-->
-                      <!--&lt;!&ndash;<option value="justify"></option>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</select>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</span>&ndash;&gt;-->
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-              <!--</quill-editor>-->
-              <br>
-              <!--<button type="button" (click)="savePackageDescription()" class="btn btn-block btn-primary">Save</button>-->
-            </div>
-            <div class="tab-pane" id="downloads" role="tabpanel" aria-expanded="false">
-              <!--<div class="example table-responsive">-->
-                <!--<table class="table">-->
-                  <!--<thead>-->
-                  <!--<tr>-->
-                    <!--<th>Version</th>-->
-                    <!--<th>Size</th>-->
-                    <!--<th>Downloads</th>-->
-                    <!--<th>Rating</th>-->
-                    <!--<th>Visibility</th>-->
-                  <!--</tr>-->
-                  <!--</thead>-->
-                  <!--<tbody *ngIf="package.versions">-->
-                  <!--<tr *ngFor="let packageVersion of package.versions">-->
-                    <!--<td>{{packageVersion.version}}</td>-->
-                    <!--<td>{{packageVersion.file.size}}</td>-->
-                    <!--<td>{{packageVersion.downloadCount}}</td>-->
-                    <!--<td>-->
-                      <!--<div class="rating" data-score="4" data-number="5" data-read-only="true"-->
-                           <!--data-plugin="rating"></div>-->
-                    <!--</td>-->
-                    <!--<td>-->
-                      <!--<span class="badge badge-success" *ngIf="packageVersion.visible == true">visible</span>-->
-                      <!--<span class="badge badge-danger" *ngIf="packageVersion.visible == false">hidden</span>-->
-                    <!--</td>-->
-                  <!--</tr>-->
-                  <!--</tbody>-->
-                <!--</table>-->
-              <!--</div>-->
-            </div>
-            <div class="tab-pane" id="comments" role="tabpanel" aria-expanded="false">
-
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- End Panel -->
     </div>
   </div>
 </div>

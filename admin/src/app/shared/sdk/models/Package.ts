@@ -1,9 +1,7 @@
 /* tslint:disable */
 import {
   PackageVersion,
-  Section,
-  PackageDownload,
-  PackagePurchase
+  Section
 } from '../index';
 
 declare var Object: any;
@@ -17,11 +15,12 @@ export interface PackageInterface {
   "maintainer"?: string;
   "visible"?: boolean;
   "stage"?: string;
-  "latest"?: string;
   "detailedDescription"?: any;
-  "latestVersion"?: any;
   "price"?: number;
   "isPaid"?: boolean;
+  "latestVersionId"?: any;
+  "screenshots"?: Array<any>;
+  "screenshotIds"?: Array<any>;
   "id"?: any;
   "createdOn": Date;
   "updatedOn": Date;
@@ -29,9 +28,9 @@ export interface PackageInterface {
   "packageId"?: any;
   "accountId"?: any;
   versions?: PackageVersion[];
+  latestVersion?: PackageVersion;
   section?: Section;
-  downloads?: PackageDownload[];
-  purchases?: PackagePurchase[];
+  purchases?: any[];
 }
 
 export class Package implements PackageInterface {
@@ -44,11 +43,12 @@ export class Package implements PackageInterface {
   "maintainer": string;
   "visible": boolean;
   "stage": string;
-  "latest": string;
   "detailedDescription": any;
-  "latestVersion": any;
   "price": number;
   "isPaid": boolean;
+  "latestVersionId": any;
+  "screenshots": Array<any>;
+  "screenshotIds": Array<any>;
   "id": any;
   "createdOn": Date;
   "updatedOn": Date;
@@ -56,9 +56,9 @@ export class Package implements PackageInterface {
   "packageId": any;
   "accountId": any;
   versions: PackageVersion[];
+  latestVersion: PackageVersion;
   section: Section;
-  downloads: PackageDownload[];
-  purchases: PackagePurchase[];
+  purchases: any[];
   constructor(data?: PackageInterface) {
     Object.assign(this, data);
   }
@@ -131,16 +131,8 @@ export class Package implements PackageInterface {
           type: 'string',
           default: 'stable'
         },
-        "latest": {
-          name: 'latest',
-          type: 'string'
-        },
         "detailedDescription": {
           name: 'detailedDescription',
-          type: 'any'
-        },
-        "latestVersion": {
-          name: 'latestVersion',
           type: 'any'
         },
         "price": {
@@ -150,6 +142,18 @@ export class Package implements PackageInterface {
         "isPaid": {
           name: 'isPaid',
           type: 'boolean'
+        },
+        "latestVersionId": {
+          name: 'latestVersionId',
+          type: 'any'
+        },
+        "screenshots": {
+          name: 'screenshots',
+          type: 'Array&lt;any&gt;'
+        },
+        "screenshotIds": {
+          name: 'screenshotIds',
+          type: 'Array&lt;any&gt;'
         },
         "id": {
           name: 'id',
@@ -185,6 +189,14 @@ export class Package implements PackageInterface {
                   keyFrom: 'id',
           keyTo: 'packageId'
         },
+        latestVersion: {
+          name: 'latestVersion',
+          type: 'PackageVersion',
+          model: 'PackageVersion',
+          relationType: 'belongsTo',
+                  keyFrom: 'latestVersionId',
+          keyTo: 'id'
+        },
         section: {
           name: 'section',
           type: 'Section',
@@ -193,18 +205,10 @@ export class Package implements PackageInterface {
                   keyFrom: 'sectionId',
           keyTo: 'id'
         },
-        downloads: {
-          name: 'downloads',
-          type: 'PackageDownload[]',
-          model: 'PackageDownload',
-          relationType: 'hasMany',
-                  keyFrom: 'id',
-          keyTo: 'packageId'
-        },
         purchases: {
           name: 'purchases',
-          type: 'PackagePurchase[]',
-          model: 'PackagePurchase',
+          type: 'any[]',
+          model: '',
           relationType: 'hasMany',
                   keyFrom: 'id',
           keyTo: 'packageId'

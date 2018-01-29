@@ -14,8 +14,8 @@ export class PackageFile {
   "url";
   "container";
   "date";
-  "id";
   "packageVersionId";
+  "id";
   packageVersion;
   constructor(data) {
     Object.assign(this, data);
@@ -85,12 +85,12 @@ export class PackageFile {
           name: 'date',
           type: 'string'
         },
-        "id": {
-          name: 'id',
-          type: 'any'
-        },
         "packageVersionId": {
           name: 'packageVersionId',
+          type: 'any'
+        },
+        "id": {
+          name: 'id',
           type: 'any'
         },
       },

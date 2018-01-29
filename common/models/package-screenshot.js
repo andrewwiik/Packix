@@ -1,81 +1,104 @@
 'use strict';
 
-const sharp = require('sharp');
-const multiparty = require('multiparty');
-const util = require('util');
-
-
 module.exports = function(Packagescreenshot) {
-  Packagescreenshot.upload = async (ctx, options, packageId, cb) => {
-    let req = ctx.req;
-    let res = ctx.res;
-    if (!options) options = {};
+  const SCREENSHOTS_CONTAINER_NAME = process.env['SCREENSHOTS_CONTAINER_NAME'] || 'screenshots';
 
-    var form = new multiparty.Form();
+  let lastDeletedPackageId = "";
 
-    form.on('error', (err) => {
-      console.log('Error parsing form: ' + err.stack);
-    });
+  Packagescreenshot.prototype.download = function(size, req, res, cb) {
+    if (!size || size.length < 1) {
+      size = 'full';
+    }
 
-    form.on('part', (part) => {
-      // You *must* act on the part by reading it
-      // NOTE: if you want to ignore it, just call "part.resume()"
+    if (!this.sizes[size]) {
+      size = 'full';
+    }
+    let fileId = this.sizes[size]['fileId'];
+    let Container = Packagescreenshot.app.models.Container;
 
-      if (!part.filename) {
-        // filename is not defined when this is a field and not a file
-        //console.log('got field named: ' + part.name + ' with the value: ' + part.value);
-        // ignore field's content
-        part.resume();
-      }
-
-      if (part.filename) {
-        // filename is defined when this is a file
-        console.log('got file named ' + part.name);
-        // ignore file's content here
-        part.resume();
-      }
-
-      part.on('error', (err) => {
-        // decide what to do
-      });
-    });
-
-
-    form.on('close', () => {
-      console.log('Upload completed!');
-      // res.setHeader('text/plain');
-      // res.end('Received ' + count + ' files');
-    });
-
-// Parse req
-    form.parse(req);
+    Container.downloadInline(SCREENSHOTS_CONTAINER_NAME, fileId, res, cb);
   };
 
 
+  Packagescreenshot.updateScreenshotsForPackageId = async (packageIdValue) => {
+    try {
+      // console.log("UPDATE PROP PACKAGE ID: " + packageIdValue);
+      // let filter = {
+      //   where: {
+      //     id: '5a593f09f9a6f02c8e0df54c'
+      //   }
+      // };
+      //
+      // let numofCount = await Package.app.models.PackageScreenshot.count({
+      //     packageId: "'" + packageIdValue + "'"
+      // });
+      //
+      // console.log('COUNT OF: ' + numofCount);
+      //
+      // console.log('FILTER: ' + JSON.stringify(filter));
+      let screenshots = await Packagescreenshot.find({
+        where: {
+          packageId: packageIdValue
+        },
+        fields: {
+          id: true,
+          sizes: true
+        }
+      });
+
+      // let cleanedScreenshots = [];
+      //
+      // for (let screenshot of screenshots) {
+      //   delete screenshot['packageId'];
+      //   delete screenshot['createdOn'];
+      //   delete screenshot['updatedOn'];
+      //
+      //   for (let sizeKey in screenshot['sizes']) {
+      //     if (screenshot['sizes'].hasOwnProperty(sizeKey)) {
+      //       delete screenshot['sizes'][sizeKey]['createdOn'];
+      //       delete screenshot['sizes'][sizeKey]['updatedOn'];
+      //       delete screenshot['sizes'][sizeKey]['id'];
+      //       delete screenshot['sizes'][sizeKey]['screenshotId'];
+      //     }
+      //   }
+      //
+      //   cleanedScreenshots.push(screenshot);
+      // }
+
+      let packageObj = await Packagescreenshot.app.models.Package.findById(packageIdValue);
+      packageObj = await packageObj.updateAttribute('screenshots', screenshots);
+      return Promise.resolve();
+    } catch (err) {
+      console.log(err);
+      return Promise.reject();
+    }
+  };
+
+  Packagescreenshot.observe('before delete', function(ctx, next) {
+    Packagescreenshot.findById(ctx.where.id, function(err, sObj) {
+      ctx.hookState.packageId = sObj.packageId;
+      lastDeletedPackageId = sObj.packageId;
+      next();
+    })
+  });
+
+  Packagescreenshot.observe('after delete', function(ctx, next) {
+    Packagescreenshot.updateScreenshotsForPackageId(lastDeletedPackageId).then(() => {
+      next();
+    });
+  });
+
   Packagescreenshot.remoteMethod(
-    'upload', {
-      description: 'Uploads s screenshot for a package',
-      accepts: [{
-        arg: 'ctx',
-        type: 'object',
-        http: {
-          source: 'context'
-        }
-      }, {
-        arg: 'options',
-        type: 'object',
-        http: {
-          source: 'query'
-        }
-      }],
-      returns: {
-        arg: 'fileObject',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'post'
-      }
+    'download',
+    {
+      isStatic: false,
+      accepts: [
+        {arg: 'size', type: 'string'},
+        {arg: 'req', type: 'object', http: {source: 'req'}},
+        {arg: 'res', type: 'object', 'http': {source: 'res'}}
+      ],
+      http: {path: '/download.jpg', verb: 'get'},
+      returns: {}
     }
   );
 };

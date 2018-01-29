@@ -2,7 +2,7 @@
 
 var crypto = require('crypto');
 
-const ipCountry = require('ip-country')
+const ipCountry = require('ip-country');
 
 // Initiate the module with custom options.
 ipCountry.init({
@@ -18,163 +18,241 @@ ipCountry.init({
 
   // Expose full IP lookup info in the request (`res.locals.IPInfo`).
   exposeInfo: false
-})
+});
+
+const clientTypeHeaderNames = ['X-Machine','x-machine', 'HTTP_X_MACHINE'];
+
+const clientTypeForHeaders = async (headers, needsType) => {
+  for (let headerName of clientTypeHeaderNames) {
+    if (headers[headerName] && headers[headerName].length > 0) {
+      return headers[headerName].toLowerCase();
+    }
+  }
+  if (needsType) {
+    return Promise.reject(new Error('Client Type Not Defined in Request Headers'));
+  } else {
+    return "UNKNOWN";
+  }
+};
+
+const clientVersionHeaderNames = ['X-Firmware','x-firmware', 'HTTP_X_FIRMWARE'];
+
+const clientVersionForHeaders = async (headers, needsVersion) => {
+  for (let headerName of  clientVersionHeaderNames) {
+    if (headers[headerName] && headers[headerName].length > 0) {
+      return headers[headerName].toLowerCase();
+    }
+  }
+  if (needsVersion) {
+    return Promise.reject(new Error('Client Version Not Defined in Request Headers'));
+  } else {
+    return 'UNKNOWN';
+  }
+ // return Promise.reject(new Error('Client Version Not Defined in Request Headers'));
+};
+
+const clientUDIDHeaderNames = ['X-Unique-ID','x-unique-id', 'HTTP_X_UNIQUE_ID'];
+
+const clientUDIDForHeaders = async (headers, needsResult) => {
+  for (let headerName of clientUDIDHeaderNames) {
+    if (headers[headerName] && headers[headerName].length > 0) {
+      return crypto.createHash('sha256').update(headers[headerName].toLowerCase()).digest('base64');
+    }
+  }
+  if (needsResult) {
+    return Promise.reject(new Error('Client UDID Not Defined in Request Headers'));
+  } else {
+    return "UNKNOWN";
+  }
+};
+
+const clientInfoForRequest = async (req, needsUDID, needsVersion, needsType) => {
+  try {
+    const headers = req.headers;
+    let ip = headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const countryCode = ipCountry.country(ip);
+    ip = crypto.createHash('sha256').update(ip).digest('base64');
+
+    let headerPromises = [
+      clientTypeForHeaders(headers, needsType),
+      clientVersionForHeaders(headers, needsVersion),
+      clientUDIDForHeaders(headers, needsUDID)
+    ];
+
+    if (needsUDID) {
+      headerPromises.push(clientUDIDForHeaders(headers));
+    }
+
+    const clientResults = await Promise.all(headerPromises);
+
+    return {
+      "type": clientResults[0],
+      "version": clientResults[1],
+      "ip": ip,
+      "country": countryCode,
+      "udid": clientResults[2]
+
+    };
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+
+const sanitizeString = (value) => {
+  return value
+    .replace(/&/, "&amp;")
+    .replace(/</, "&lt;")
+    .replace(/>/, "&gt;")
+    .replace(/"/, "&quot;")
+    .replace(/'/, "&apos;");
+}
+
+
+
 
 module.exports = function(Packageversion) {
+
   const PACKAGES_CONTAINER_NAME = process.env['PACKAGES_CONTAINER_NAME']
   const baseURL = process.env['HOST_URL'];
   const path = require('path');
 
-  Packageversion.downloadPackage = (packageVersion, udid, req, res, cb) => {
-    Packageversion.app.models.Container.download(PACKAGES_CONTAINER_NAME, packageVersion.file['url'].substr(packageVersion.file['url'].lastIndexOf('/') + 1), res, cb);
+  Packageversion.downloadPackage = (packageVersion, clientInfo, res, cb) => {
+    Packageversion.app.models.Container.download(PACKAGES_CONTAINER_NAME, packageVersion.file.fileDownloadId, res, cb);
 
     var downloadInfo = {};
     downloadInfo['packageId'] = packageVersion['packageId'];
-    downloadInfo['versionId'] = packageVersion.id;
+    downloadInfo['packageVersionId'] = packageVersion.id;
+    downloadInfo['clientIp'] = clientInfo['ip'];
+    downloadInfo['clientUDID'] = clientInfo['udid'];
+    downloadInfo['clientType'] = clientInfo['type'];
+    downloadInfo['clientVersion'] = clientInfo['version'];
+    downloadInfo['clientCountry'] =  clientInfo['country'];
 
-    var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    var countryCode = ipCountry.country(ip);
-    downloadInfo['device-ip'] = crypto.createHash('sha256').update(ip).digest('base64');
+    let findInfo = {};
+    findInfo['clientUDID'] = clientInfo['udid'];
+    findInfo['packageId'] = packageVersion['packageId'];
+    findInfo['packageVersionId'] = packageVersion.id;
 
-    if (udid && udid.length > 0) {
-      downloadInfo['device-udid'] = udid;
-    }
-
-    var deviceType = req.headers['HTTP_X_MACHINE'];
-    if (!deviceType || deviceType.length < 1) {
-      deviceType = req.headers['x-machine'];
-    }
-
-    if (!deviceType || deviceType.length < 1) {
-      deviceType = req.headers['X-Machine'];
-    }
-
-    if (deviceType && deviceType.length > 0) {
-      deviceType = deviceType.toLowerCase();
-      downloadInfo['device-model'] = deviceType;
-    }
-
-    var deviceVersion = req.headers['HTTP_X_FIRMWARE'];
-    if (!deviceVersion || deviceVersion.length < 1) {
-      deviceVersion = req.headers['x-firmware'];
-    }
-
-    if (!deviceVersion || deviceVersion.length < 1) {
-      deviceVersion = req.headers['X-Firmware'];
-    }
-
-    if (deviceVersion && deviceVersion.length > 0) {
-      deviceVersion = deviceVersion.toLowerCase();
-      downloadInfo['device-firmware'] = deviceVersion;
-    }
-
-    if (countryCode && countryCode.length > 0) {
-      downloadInfo['country-code'] = countryCode;
-    }
-
-    Packageversion.app.models.PackageDownload.findOrCreate(downloadInfo, function (downloadStatErr, downloadStat, created) {
+    Packageversion.app.models.PackageDownload.findOrCreate({
+      where: findInfo
+    },downloadInfo, function (downloadStatErr, downloadStat, created) {
       if (downloadStatErr) {
         console.log(downloadStatErr);
       }
     });
   };
 
-  Packageversion.prototype.download = function(req,res, cb) {
-    Packageversion.findById(this.id, {
-      include: ['file', 'package']
-    }, function (err, packageVersion) {
-      if (err) {
-        cb(err, nil);
-      } else {
-        packageVersion = packageVersion.toJSON();
-        console.log(packageVersion.file['url']);
+  Packageversion.handleCanDownloadPackage = async (req,packageVersionId) => {
+    let reqObj = req;
+    return new Promise(async (resolve, reject) => {
+      try {
+        let packageVersionObj = await Packageversion.findById(packageVersionId, {
+          include: [{
+            relation: 'file'
+          }, {
+            relation: 'package',
+            scope: {
+              include: ['downloadRestrictions']
+            }
+          }]
+        });
 
-        var udid = req.headers['HTTP_X_UNIQUE_ID'];
-        if (!udid || udid.length < 1) {
-          udid = req.headers['x-unique-id'];
+        if (packageVersionObj.toJSON) {
+          packageVersionObj = packageVersionObj.toJSON();
         }
 
-        if (!udid || udid.length < 1) {
-          udid = req.headers['X-Unique-ID'];
-        }
+        if (packageVersionObj.package.downloadRestrictions && packageVersionObj.package.downloadRestrictions.length > 0) {
 
-        if (!udid || udid.length < 1) {
-          udid = req.headers['X-Unique-Id'];
-        }
-
-        if (udid && udid.length > 0) {
-          udid = udid.toLowerCase();
-          udid = crypto.createHash('sha256').update(udid).digest('base64');
-        }
-
-        if (packageVersion.package.isPaid) {
-          // if (req.)
-          if (udid && udid.length > 0) {
-            Packageversion.app.models.Device.findOne({
-              where: {
-                udid: udid
-              },
-              include: ['account']
-            }, (deviceErr, deviceObject) => {
-              if (deviceErr) {
-                cb(403, 'could not find a device registered with the provided udid');
-              } else {
-                deviceObject = deviceObject.toJSON();
-                if (deviceObject['account']) {
-                  Packageversion.app.models.PackagePurchase.findOne({
-                    where: {
-                      packageId: packageVersion.package.id,
-                      accountId: deviceObject.account.id
-                    }
-                  }, (purchaseErr, purchaseObject) => {
-                    if (purchaseErr) {
-                      cb(403,'According to our records you have not purchased this package');
-                    } else {
-                      if (purchaseObject.isComplete) {
-                        Packageversion.downloadPackage(packageVersion, udid, req,res,cb);
-                      } else {
-                        cb(403, 'According to our records you have not purchased this package.')
-                      }
-                    }
-                  })
-                } else {
-                  cb(403, 'could not find a account linked to this device');
-                }
-              }
-            })
+          const clientInfo = await clientInfoForRequest(req,true, true, true);
+          let restrictions = packageVersionObj.package.downloadRestrictions;
+          let canDownload = await Packageversion.app.models.PackageDownloadRestriction.processRestrictions(restrictions, reqObj, packageVersionObj.package.id);
+          console.log('can download: '+ canDownload);
+          if (canDownload === "true") {
+            resolve({
+              canDownload: true,
+              clientInfo: clientInfo,
+              packageVersionObj: packageVersionObj
+            });
           } else {
-            cb(403, 'Must Provide UDID in Headers to verifier as a purchaser');
+            resolve({
+              canDownload: false,
+              clientInfo: clientInfo,
+              packageVersionObj: packageVersionObj
+            });
           }
         } else {
-
-          Packageversion.downloadPackage(packageVersion, udid, req,res,cb);
+          const clientInfo = await clientInfoForRequest(req,false, false,false);
+          resolve({
+            canDownload: true,
+            clientInfo: clientInfo,
+            packageVersionObj: packageVersionObj
+          });
+          //return Packageversion.downloadPackage(packageVersionObj, clientInfo, res,cb);
         }
+      } catch (err) {
+        reject(err);
       }
     });
-    // var packageVersion = this;
-    // Packageversion.include(packageVersion, 'file', function() {
-    //   console.log(packageVersion.file['url']);
-    //   Packageversion.app.models.Container.download('packages', packageVersion.file['url'].substr(url.lastIndexOf('/') + 1), res,cb);
+  }
+
+  Packageversion.prototype.download = function(req,res, cb) {
+
+    // cb = function(arg1, arg2) {
+    //   console.log('callback called');
+    // };
+    // return cb({
+    //   name: 'Unauthorized',
+    //   status: 401,
+    //   message: 'You are not authorized to download this package, if it is paid you need to either purchase it or link' +
+    //   ' your device to the account you bought the package with.'
     // });
-   // Packageversion.app.models.Container.download('packages', this.file.url.substr(url.lastIndexOf('/') + 1), res,cb);
-  };
 
-  Packageversion.getDownloadCount = (packageVersionObj) => {
-    var promiseGetCount = new Promise((resolve, reject) => {
-      Packageversion.app.models.PackageDownload.count({
-        versionId: packageVersionObj.id
-      }, (err, downloadCount) => {
-        if (err) console.log(err);
-        resolve(downloadCount);
+
+    const versionObjId = this.id;
+
+    Packageversion.handleCanDownloadPackage(req, versionObjId).then((result) => {
+      if (result.canDownload === true) {
+        return Packageversion.downloadPackage(result.packageVersionObj, result.clientInfo, res, cb);
+      } else {
+        return cb({
+          name: 'Unauthorized',
+          status: 402,
+          message: 'You are not authorized to download this package, if it is paid you need to either purchase it or link' +
+          ' your device to the account you bought the package with.'
+        });
+      }
+    }, (err) => {
+      console.log(err);
+      return cb({
+        name: 'Server Error',
+        status: 400,
+        message: 'A server error occured'
       });
+      // return cb({ error: {
+      //   name: 'Server Error',
+      //   statusCode: 400,
+      //   message: 'An error occured on the server, please contact the repo maintainer'
+      // }});
     });
-
-    return promiseGetCount;
   };
 
-  Packageversion.computeDownloadCount = async (packageVersionObj) => {
-    var count = await Packageversion.getDownloadCount(packageVersionObj);
-    return count;
+  Packageversion.getDownloadCount = async (packageVersionObj) => {
+    try {
+      let downloadCount = Packageversion.app.models.PackageDownload.count({
+        packageVersionId: packageVersionObj.id
+      });
+
+      console.log(packageVersionObj.id);
+
+      return downloadCount;
+    } catch (err) {
+     return Promise.reject(err);
+    }
+  };
+
+  Packageversion.computeDownloadCount = async function(packageVersionObj) {
+    return await Packageversion.getDownloadCount(packageVersionObj);
   };
 
   Packageversion.remoteMethod(
@@ -187,6 +265,127 @@ module.exports = function(Packageversion) {
       ],
       http: {path:'/download', verb: 'get'},
       returns: {}
+    }
+  );
+
+  Packageversion.handleRate = async (packageVersionObj, req, rating) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const clientInfo = await clientInfoForRequest(req, false, false, true);
+        const data = {
+          packageId: packageVersionObj.packageId,
+          packageVersionId: packageVersionObj.id,
+          clientIp: clientInfo['ip'],
+          clientType: clientInfo['type']
+        };
+
+        let createData = Object.assign({}, data);
+        createData['value'] = rating;
+
+        let previousRatingResult = await Packageversion.app.models.PackageVersionRating.findOrCreate({
+          where: data
+        }, createData);
+
+        let previousRating = previousRatingResult[0];
+        if (previousRatingResult[1] === false) {
+          previousRating = await previousRating.updateAttribute('value', rating);
+        }
+        resolve(previousRating);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  };
+
+
+  Packageversion.prototype.rate = function(req, rating, cb) {
+    if (rating >= 1 && rating <= 5 && (rating % 1 === 0)) {
+      const packageVersionObj = this;
+      Packageversion.handleRate(packageVersionObj, req, rating).then((result) => {
+        return cb(null,result);
+      }, (err) => {
+        return cb(err);
+      });
+    } else {
+     return cb(400,'Not a valid Rating');
+    }
+  };
+
+  Packageversion.remoteMethod(
+    'rate',
+    {
+      isStatic: false,
+      accepts: [
+        {arg: 'req', type: 'object', http: {source: 'req'}},
+        {arg: 'rating', type: 'string', http: { source: 'query' } },
+      ],
+      http: {path:'/rate', verb: 'get'},
+      returns: {type: 'any', root: true}
+    }
+  );
+
+  Packageversion.handleReview = async (packageVersionObj, req, title, description) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const clientInfo = await clientInfoForRequest(req, false, false, true);
+        const data = {
+          packageId: packageVersionObj.packageId,
+          packageVersionId: packageVersionObj.id,
+          clientIp: clientInfo['ip'],
+          clientType: clientInfo['type'],
+          versionName: packageVersionObj.version
+        };
+
+        let createData = Object.assign({}, data);
+        createData['title'] = title;
+        createData['description'] = description;
+
+        let previousReviewResult = await Packageversion.app.models.PackageVersionReview.findOrCreate({
+          where: data
+        }, createData);
+
+        let previousReview = previousReviewResult[0];
+        if (previousReviewResult[1] === false) {
+          previousReview = await previousReview.updateAttributes({
+            title: title,
+            description: description
+          });
+        }
+        resolve(previousReview);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  };
+
+
+  Packageversion.prototype.review = function(req, title, description, cb) {
+    if (title && description) {
+      title = sanitizeString(title);
+      description = sanitizeString(description);
+      const packageVersionObj = this;
+      Packageversion.handleReview(packageVersionObj, req, title, description).then((result) => {
+        return cb(null,result);
+      }, (err) => {
+        return cb(err);
+      });
+
+    } else {
+      cb(400, 'Invalid');
+    }
+  };
+
+  Packageversion.remoteMethod(
+    'review',
+    {
+      isStatic: false,
+      accepts: [
+        {arg: 'req', type: 'object', http: {source: 'req'}},
+        {arg: 'title', type: 'string'},
+        {arg: 'description', type: 'string'}
+      ],
+      http: {path:'/review', verb: 'post'},
+      returns: {type: 'any', root: true}
     }
   );
 };

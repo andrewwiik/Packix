@@ -13,8 +13,9 @@ export interface PackageVersionInterface {
   "visible"?: boolean;
   "raw"?: any;
   "downloadCount"?: number;
-  "id"?: any;
   "packageId"?: any;
+  "packageFileId"?: string;
+  "id"?: any;
   "createdOn": Date;
   "updatedOn": Date;
   package?: Package;
@@ -29,8 +30,9 @@ export class PackageVersion implements PackageVersionInterface {
   "visible": boolean;
   "raw": any;
   "downloadCount": number;
-  "id": any;
   "packageId": any;
+  "packageFileId": string;
+  "id": any;
   "createdOn": Date;
   "updatedOn": Date;
   package: Package;
@@ -94,12 +96,16 @@ export class PackageVersion implements PackageVersionInterface {
           name: 'downloadCount',
           type: 'number'
         },
-        "id": {
-          name: 'id',
-          type: 'any'
-        },
         "packageId": {
           name: 'packageId',
+          type: 'any'
+        },
+        "packageFileId": {
+          name: 'packageFileId',
+          type: 'string'
+        },
+        "id": {
+          name: 'id',
           type: 'any'
         },
         "createdOn": {

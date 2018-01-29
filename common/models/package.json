@@ -66,10 +66,22 @@
     "latestVersionId": {
       "type": "string"
     },
+    "screenshots": {
+      "type": [
+        "PackageScreenshot"
+      ],
+      "default": []
+    },
     "screenshotIds": {
       "type": [
         "string"
       ]
+    },
+    "recentReviews": {
+      "type": [
+        "PackageVersionReview"
+      ],
+      "default": []
     }
   },
   "validations": [],
@@ -92,12 +104,22 @@
     "purchases": {
       "type": "hasMany",
       "model": "PackagePurchase",
-      "foreignKey": "packageId"
+      "foreignKey": ""
     },
     "latestVersion": {
       "type": "belongsTo",
       "model": "PackageVersion",
       "foreignKey": "latestVersionId"
+    },
+    "reviews": {
+      "type": "hasMany",
+      "model": "PackageVersionReview",
+      "foreignKey": ""
+    },
+    "downloadRestrictions": {
+      "type": "hasMany",
+      "model": "PackageDownloadRestriction",
+      "foreignKey": ""
     }
   },
   "acls": [
@@ -128,18 +150,17 @@
       "property": "purchases"
     },
     {
-      "accessType": "EXECUTE",
+      "accessType": "*",
       "principalType": "ROLE",
       "principalId": "admin",
-      "permission": "ALLOW",
-      "property": "upload"
+      "permission": "ALLOW"
     },
     {
-      "accessType": "WRITE",
+      "accessType": "*",
       "principalType": "ROLE",
-      "principalId": "admin",
+      "principalId": "$everyone",
       "permission": "ALLOW",
-      "property": "*"
+      "property": "writeReview"
     }
   ],
   "methods": {}

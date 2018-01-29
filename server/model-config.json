@@ -22,7 +22,7 @@
   },
   "User": {
     "dataSource": "db",
-    "public": false,
+    "public": true,
     "attached": "extend-models/user.js"
   },
   "AccessToken": {
@@ -35,7 +35,7 @@
   },
   "UserIdentity": {
     "dataSource": "db",
-    "public": false
+    "public": true
   },
   "ACL": {
     "dataSource": "db",
@@ -98,6 +98,14 @@
     "public": true
   },
   "PackageScreenshotFile": {
+    "dataSource": "db",
+    "public": true
+  },
+  "PackageVersionRating": {
+    "dataSource": "db",
+    "public": true
+  },
+  "PackageVersionReview": {
     "dataSource": "db",
     "public": true
   }

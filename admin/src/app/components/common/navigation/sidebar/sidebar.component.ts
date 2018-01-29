@@ -13,9 +13,9 @@ import {UserIdentityApi} from "../../../../shared/sdk/services/custom/UserIdenti
 import {UserApi} from "../../../../shared/sdk/services/custom/User";
 import {StorageBrowser} from "../../../../shared/sdk/storage/storage.browser";
 import {User} from "../../../../shared/sdk/models/User";
-import {Token} from "graphql";
-import {UserIdentity} from "../../../../shared/sdk/models/UserIdentity";
-import {SDKToken} from "../../../../shared/sdk/models/BaseModels";
+// import {Token} from "graphql";
+// import {UserIdentity} from "../../../../shared/sdk/models/UserIdentity";
+// import {SDKToken} from "../../../../shared/sdk/models/BaseModels";
 
 const DOC = document;
 const $DOC = $(document);

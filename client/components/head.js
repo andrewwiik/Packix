@@ -25,7 +25,9 @@ const Head = (props) => (
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <link rel="stylesheet" type="text/css" href="/assets/css/styles.css" />
-
+    <link rel="stylesheet" type="text/css" href="/assets/css/fa-regular.min.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/fa-solid.min.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/fontawesome.min.css" />
   </NextHead>
 )
 

@@ -6,6 +6,13 @@
   "options": {
     "validateUpsert": true
   },
+  "mixins": {
+    "TimeStamp": {
+      "createdAt": "createdOn",
+      "updatedAt": "updatedOn",
+      "silenceWarnings": false
+    }
+  },
   "properties": {
     "width": {
       "type": "number",
@@ -15,9 +22,20 @@
       "type": "number",
       "required": true
     },
-    "size": {
-      "type": "number",
-      "required": true
+    "sizeKey": {
+      "type": "string",
+      "required": true,
+      "index": true
+    },
+    "fileId": {
+      "type": "string",
+      "required": true,
+      "index": true
+    },
+    "screenshotId": {
+      "type": "string",
+      "required": true,
+      "index": true
     }
   },
   "validations": [],

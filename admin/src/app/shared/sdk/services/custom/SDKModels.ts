@@ -1,16 +1,14 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
-import { Device } from '../../models/Device';
 import { User } from '../../models/User';
-import { AccessToken } from '../../models/AccessToken';
-import { UserCredential } from '../../models/UserCredential';
 import { UserIdentity } from '../../models/UserIdentity';
 import { Package } from '../../models/Package';
 import { PackageFile } from '../../models/PackageFile';
 import { PackageVersion } from '../../models/PackageVersion';
 import { Section } from '../../models/Section';
 import { PackageDownload } from '../../models/PackageDownload';
-import { PackagePurchase } from '../../models/PackagePurchase';
+import { PackageScreenshot } from '../../models/PackageScreenshot';
+import { PackageScreenshotFile } from '../../models/PackageScreenshotFile';
 
 export interface Models { [name: string]: any }
 
@@ -18,17 +16,15 @@ export interface Models { [name: string]: any }
 export class SDKModels {
 
   private models: Models = {
-    Device: Device,
     User: User,
-    AccessToken: AccessToken,
-    UserCredential: UserCredential,
     UserIdentity: UserIdentity,
     Package: Package,
     PackageFile: PackageFile,
     PackageVersion: PackageVersion,
     Section: Section,
     PackageDownload: PackageDownload,
-    PackagePurchase: PackagePurchase,
+    PackageScreenshot: PackageScreenshot,
+    PackageScreenshotFile: PackageScreenshotFile,
     
   };
 

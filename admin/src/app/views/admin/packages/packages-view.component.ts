@@ -27,7 +27,7 @@ export class PackagesViewComponent implements AfterViewInit, OnDestroy{
       this.packageUploader = new FileUploader({
         autoUpload: true,
         authToken: this.auth.getAccessTokenId(),
-        url: LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() + "/PackageScreenshots/upload",
+        url: LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() + "/Packages/upload",
         isHTML5: true
       });
 

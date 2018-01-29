@@ -40,8 +40,98 @@ app.prepare()
     app.render(req, res, actualPage, queryParams)
   });
 
+  server.get('/package/:id/', (req, res) => {
+    const actualPage = '/package';
+    const queryParams = { "package": req.params["id"] };
+    console.log(req.params);
+    req.query = queryParams;
+    app.render(req, res, actualPage, queryParams)
+  });
+
+  // server.get('/package', (req, res) => {
+  //   console.log('REQ P: ' + req.params);
+  //   console.log('REQ Q: ' + req.query);
+  //   const actualPage = '/package';
+  //   const queryParams = { "package": req.params["id"] || req.query['id'] };
+  //   console.log(req.params);
+  //   req.query = queryParams;
+  //   app.render(req, res, actualPage, queryParams)
+  // });
+
   server.get('/packages/:id', (req, res) => {
     const actualPage = '/package';
+    const queryParams = { "package": req.params["id"] };
+    console.log(req.params);
+    req.query = queryParams;
+    app.render(req, res, actualPage, queryParams)
+  });
+
+  server.get('/packages/:id/', (req, res) => {
+    const actualPage = '/package';
+    const queryParams = { "package": req.params["id"] };
+    console.log(req.params);
+    req.query = queryParams;
+    app.render(req, res, actualPage, queryParams)
+  });
+
+  server.get('/package/:id/changes', (req, res) => {
+    const actualPage = '/changes';
+    const queryParams = { "package": req.params["id"] };
+    console.log(req.params);
+    req.query = queryParams;
+    app.render(req, res, actualPage, queryParams)
+  });
+
+  server.get('/packages/:id/changes', (req, res) => {
+    const actualPage = '/changes';
+    const queryParams = { "package": req.params["id"] };
+    console.log(req.params);
+    req.query = queryParams;
+    app.render(req, res, actualPage, queryParams)
+  });
+
+  server.get('/package/:id/screenshots', (req, res) => {
+    const actualPage = '/screenshots';
+    const queryParams = { "package": req.params["id"] };
+    console.log(req.params);
+    req.query = queryParams;
+    app.render(req, res, actualPage, queryParams)
+  });
+
+  server.get('/packages/:id/screenshots', (req, res) => {
+    const actualPage = '/screenshots';
+    const queryParams = { "package": req.params["id"] };
+    console.log(req.params);
+    req.query = queryParams;
+    app.render(req, res, actualPage, queryParams)
+  });
+
+  server.get('/package/:id/review', (req, res) => {
+    const actualPage = '/write-review';
+    const queryParams = { "package": req.params["id"] };
+    console.log(req.params);
+    req.query = queryParams;
+    app.render(req, res, actualPage, queryParams)
+  });
+
+  server.get('/packages/:id/review', (req, res) => {
+    const actualPage = '/write-review';
+    const queryParams = { "package": req.params["id"] };
+    console.log(req.params);
+    req.query = queryParams;
+    app.render(req, res, actualPage, queryParams)
+  });
+
+  server.get('/package/:id/reviews', (req, res) => {
+    const actualPage = '/reviews';
+    const queryParams = { "package": req.params["id"] };
+    console.log(req.params);
+    req.query = queryParams;
+    app.render(req, res, actualPage, queryParams)
+  });
+
+  server.get('/packages/:id/reviews', (req, res) => {
+    const actualPage = '/reviews';
     const queryParams = { "package": req.params["id"] };
     console.log(req.params);
     req.query = queryParams;
@@ -108,7 +198,7 @@ app.prepare()
 
   server.get('*', (req, res) => {
     return handle(req, res)
-  })
+  });
 
 
   server.listen(port, (err) => {

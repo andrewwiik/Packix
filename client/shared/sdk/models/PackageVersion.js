@@ -1,7 +1,10 @@
 
 import {
   Package,
-  PackageFile
+  PackageFile,
+  PackageDownload,
+  PackageVersionRating,
+  PackageVersionReview
 } from '../index';
 
 
@@ -11,11 +14,19 @@ export class PackageVersion {
   "dependencies";
   "visible";
   "raw";
-  "id";
+  "downloadCount";
+  "ratingStats";
   "packageId";
+  "packageFileId";
+  "recentReviews";
+  "id";
+  "createdOn";
+  "updatedOn";
   package;
   file;
   downloads;
+  ratings;
+  reviews;
   constructor(data) {
     Object.assign(this, data);
   }
@@ -54,7 +65,7 @@ export class PackageVersion {
         },
         "changes": {
           name: 'changes',
-          type: 'string'
+          type: 'Array&lt;any&gt;'
         },
         "dependencies": {
           name: 'dependencies',
@@ -69,13 +80,37 @@ export class PackageVersion {
           name: 'raw',
           type: 'any'
         },
-        "id": {
-          name: 'id',
+        "downloadCount": {
+          name: 'downloadCount',
+          type: 'number'
+        },
+        "ratingStats": {
+          name: 'ratingStats',
           type: 'any'
         },
         "packageId": {
           name: 'packageId',
           type: 'any'
+        },
+        "packageFileId": {
+          name: 'packageFileId',
+          type: 'string'
+        },
+        "recentReviews": {
+          name: 'recentReviews',
+          type: 'Array&lt;any&gt;'
+        },
+        "id": {
+          name: 'id',
+          type: 'any'
+        },
+        "createdOn": {
+          name: 'createdOn',
+          type: 'Date'
+        },
+        "updatedOn": {
+          name: 'updatedOn',
+          type: 'Date'
         },
       },
       relations: {
@@ -91,8 +126,18 @@ export class PackageVersion {
         },
         downloads: {
           name: 'downloads',
-          type: 'any[]',
-          model: ''
+          type: 'PackageDownload[]',
+          model: 'PackageDownload'
+        },
+        ratings: {
+          name: 'ratings',
+          type: 'PackageVersionRating[]',
+          model: 'PackageVersionRating'
+        },
+        reviews: {
+          name: 'reviews',
+          type: 'PackageVersionReview[]',
+          model: 'PackageVersionReview'
         },
       }
     }

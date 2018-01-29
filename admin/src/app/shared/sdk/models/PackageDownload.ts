@@ -2,24 +2,26 @@
 
 declare var Object: any;
 export interface PackageDownloadInterface {
-  "packageId": any;
+  "packageId": string;
   "versionId": any;
   "device-ip": string;
   "device-udid"?: string;
   "device-model"?: string;
   "device-firmware"?: string;
+  "country-code"?: string;
   "id"?: any;
   "createdOn": Date;
   "updatedOn": Date;
 }
 
 export class PackageDownload implements PackageDownloadInterface {
-  "packageId": any;
+  "packageId": string;
   "versionId": any;
   "device-ip": string;
   "device-udid": string;
   "device-model": string;
   "device-firmware": string;
+  "country-code": string;
   "id": any;
   "createdOn": Date;
   "updatedOn": Date;
@@ -58,7 +60,7 @@ export class PackageDownload implements PackageDownloadInterface {
       properties: {
         "packageId": {
           name: 'packageId',
-          type: 'any'
+          type: 'string'
         },
         "versionId": {
           name: 'versionId',
@@ -79,6 +81,10 @@ export class PackageDownload implements PackageDownloadInterface {
         },
         "device-firmware": {
           name: 'device-firmware',
+          type: 'string'
+        },
+        "country-code": {
+          name: 'country-code',
           type: 'string'
         },
         "id": {

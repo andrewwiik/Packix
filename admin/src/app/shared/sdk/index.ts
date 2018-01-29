@@ -49,17 +49,15 @@ import { SocketBrowser } from './sockets/socket.browser';
 import { SocketDriver } from './sockets/socket.driver';
 import { SocketConnection } from './sockets/socket.connections';
 import { RealTime } from './services/core/real.time';
-import { DeviceApi } from './services/custom/Device';
 import { UserApi } from './services/custom/User';
-import { AccessTokenApi } from './services/custom/AccessToken';
-import { UserCredentialApi } from './services/custom/UserCredential';
 import { UserIdentityApi } from './services/custom/UserIdentity';
 import { PackageApi } from './services/custom/Package';
 import { PackageFileApi } from './services/custom/PackageFile';
 import { PackageVersionApi } from './services/custom/PackageVersion';
 import { SectionApi } from './services/custom/Section';
 import { PackageDownloadApi } from './services/custom/PackageDownload';
-import { PackagePurchaseApi } from './services/custom/PackagePurchase';
+import { PackageScreenshotApi } from './services/custom/PackageScreenshot';
+import { PackageScreenshotFileApi } from './services/custom/PackageScreenshotFile';
 /**
 * @module SDKBrowserModule
 * @description
@@ -91,17 +89,15 @@ export class SDKBrowserModule {
         JSONSearchParams,
         SDKModels,
         RealTime,
-        DeviceApi,
         UserApi,
-        AccessTokenApi,
-        UserCredentialApi,
         UserIdentityApi,
         PackageApi,
         PackageFileApi,
         PackageVersionApi,
         SectionApi,
         PackageDownloadApi,
-        PackagePurchaseApi,
+        PackageScreenshotApi,
+        PackageScreenshotFileApi,
         internalStorageProvider,
         { provide: SDKStorage, useClass: StorageBrowser },
         { provide: SocketDriver, useClass: SocketBrowser }

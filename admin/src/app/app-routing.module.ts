@@ -12,9 +12,9 @@ const routes: Routes = [
   {
     path: '', component: DashboardLayoutComponent,
     children: [
-      { path: 'admin/packages', component: PackagesViewComponent },
-      { path: 'admin/packages/:id', component: PackageViewComponent },
-      { path: 'admin/packages/:id/version/:version', component: PackageVersionViewComponent },
+      { path: 'packages', component: PackagesViewComponent },
+      { path: 'packages/:id', component: PackageViewComponent },
+      { path: 'packages/:id/version/:version', component: PackageVersionViewComponent },
     ]
   },
   {

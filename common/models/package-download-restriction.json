@@ -1,0 +1,42 @@
+{
+  "name": "PackageDownloadRestriction",
+  "plural": "PackageDownloadRestrictions",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "TimeStamp": {
+      "createdAt": "createdOn",
+      "updatedAt": "updatedOn",
+      "silenceWarnings": false
+    }
+  },
+  "properties": {
+    "type": {
+      "type": "string",
+      "required": true,
+      "index": true
+    },
+    "data": {
+      "type": "object",
+      "required": true
+    },
+    "packageId": {
+      "type": "string",
+      "required": true,
+      "index": true
+    }
+  },
+  "validations": [],
+  "relations": {
+    "package": {
+      "type": "belongsTo",
+      "model": "Package",
+      "foreignKey": ""
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

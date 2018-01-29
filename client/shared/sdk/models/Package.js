@@ -1,7 +1,8 @@
 
 import {
   PackageVersion,
-  Section
+  Section,
+  PackageVersionReview
 } from '../index';
 
 
@@ -15,16 +16,24 @@ export class Package {
   "maintainer";
   "visible";
   "stage";
-  "latest";
   "detailedDescription";
+  "price";
+  "isPaid";
+  "latestVersionId";
+  "screenshots";
+  "screenshotIds";
+  "recentReviews";
   "id";
+  "createdOn";
+  "updatedOn";
   "sectionId";
   "packageId";
   "accountId";
   versions;
+  latestVersion;
   section;
-  downloads;
   purchases;
+  reviews;
   constructor(data) {
     Object.assign(this, data);
   }
@@ -96,17 +105,45 @@ export class Package {
           type: 'string',
           default: 'stable'
         },
-        "latest": {
-          name: 'latest',
-          type: 'string'
-        },
         "detailedDescription": {
           name: 'detailedDescription',
           type: 'any'
         },
+        "price": {
+          name: 'price',
+          type: 'number'
+        },
+        "isPaid": {
+          name: 'isPaid',
+          type: 'boolean'
+        },
+        "latestVersionId": {
+          name: 'latestVersionId',
+          type: 'any'
+        },
+        "screenshots": {
+          name: 'screenshots',
+          type: 'Array&lt;any&gt;'
+        },
+        "screenshotIds": {
+          name: 'screenshotIds',
+          type: 'Array&lt;any&gt;'
+        },
+        "recentReviews": {
+          name: 'recentReviews',
+          type: 'Array&lt;any&gt;'
+        },
         "id": {
           name: 'id',
           type: 'any'
+        },
+        "createdOn": {
+          name: 'createdOn',
+          type: 'Date'
+        },
+        "updatedOn": {
+          name: 'updatedOn',
+          type: 'Date'
         },
         "sectionId": {
           name: 'sectionId',
@@ -127,20 +164,25 @@ export class Package {
           type: 'PackageVersion[]',
           model: 'PackageVersion'
         },
+        latestVersion: {
+          name: 'latestVersion',
+          type: 'PackageVersion',
+          model: 'PackageVersion'
+        },
         section: {
           name: 'section',
           type: 'Section',
           model: 'Section'
         },
-        downloads: {
-          name: 'downloads',
-          type: 'any[]',
-          model: ''
-        },
         purchases: {
           name: 'purchases',
           type: 'any[]',
           model: ''
+        },
+        reviews: {
+          name: 'reviews',
+          type: 'PackageVersionReview[]',
+          model: 'PackageVersionReview'
         },
       }
     }

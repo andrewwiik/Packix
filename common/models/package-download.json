@@ -12,40 +12,64 @@
       "silenceWarnings": false
     }
   },
+  "hidden": [
+    "clientIp",
+    "clientCountry",
+    "clientUDID"
+  ],
   "properties": {
     "packageId": {
       "type": "string",
       "required": true,
       "index": true
     },
-    "versionId": {
+    "packageVersionId": {
       "type": "string",
       "required": true,
       "index": true
     },
-    "device-ip": {
+    "clientIp": {
       "type": "string",
       "required": true,
       "default": "127.0.0.1"
     },
-    "device-udid": {
-      "type": "string"
-    },
-    "device-model": {
+    "clientUDID": {
       "type": "string",
-      "index": true
+      "required": true,
+      "index": true,
+      "default": "UNKNOWN"
     },
-    "device-firmware": {
+    "clientType": {
       "type": "string",
-      "index": true
+      "required": true,
+      "index": true,
+      "default": "UNKNOWN"
     },
-    "country-code": {
+    "clientVersion": {
       "type": "string",
-      "index": true
+      "required": true,
+      "index": true,
+      "default": "UNKNOWN"
+    },
+    "clientCountry": {
+      "type": "string",
+      "index": true,
+      "default": "UNKNOWN"
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "packageVersion": {
+      "type": "belongsTo",
+      "model": "PackageVersion",
+      "foreignKey": ""
+    },
+    "package": {
+      "type": "belongsTo",
+      "model": "Package",
+      "foreignKey": ""
+    }
+  },
   "acls": [
     {
       "accessType": "*",
@@ -54,10 +78,17 @@
       "permission": "DENY"
     },
     {
-      "accessType": "READ",
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW"
+    },
+    {
+      "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
-      "permission": "ALLOW"
+      "permission": "ALLOW",
+      "property": "count"
     }
   ],
   "methods": {}

@@ -21,7 +21,7 @@ module.exports = (app) => {
   }
 
   if (process.env['USE_FACEBOOK_LOGIN'] === 'YES') {
-    config['google-login'] = {
+    config['facebook-login'] = {
       'provider': 'facebook',
       'module': 'passport-facebook',
       'clientID': process.env['FACEBOOK_LOGIN_CLIENT_ID'],
@@ -34,6 +34,23 @@ module.exports = (app) => {
       'profileFields': ['id', 'email', 'last_name', 'first_name', 'photos']
     };
   }
+
+  if (process.env['USE_PATREON_LOGIN'] === 'YES') {
+    config['patreon-login'] = {
+      'provider': 'patreon',
+      'module': 'passport-patreon',
+      'clientID': process.env['PATREON_LOGIN_CLIENT_ID'],
+      'clientSecret': process.env['PATREON_LOGIN_CLIENT_SECRET'],
+      'callbackURL': 'https://' + baseURL + '/api/auth/patreon/callback',
+      'authPath': '/api/auth/patreon',
+      'callbackPath': '/api/auth/patreon/callback',
+      'successRedirect': '/api/auth/success',
+      'scope': ['users', 'pledges-to-me', 'my-campaign'],
+      'profileFields': ['id', 'name', 'avatar']
+    };
+  }
+
+  console.log(config);
 
   return config;
 };

@@ -5,19 +5,15 @@ import { SDKModels } from './SDKModels';
 import { BaseLoopBackApi } from '../core/base.service';
 import { LoopBackConfig } from '../../lb.config';
 import { LoopBackAuth } from '../core/auth.service';
-import { LoopBackFilter, SDKToken } from '../../models/BaseModels';
+import { LoopBackFilter, SDKToken, AccessToken } from '../../models/BaseModels';
 import { JSONSearchParams } from '../core/search.params';
 import { ErrorHandler } from '../core/error.service';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Rx';
 import { User } from '../../models/User';
 import { SocketConnection } from '../../sockets/socket.connections';
-import { AccessToken } from '../../models/AccessToken';
-import { Device } from '../../models/Device';
 import { Package } from '../../models/Package';
-import { PackagePurchase } from '../../models/PackagePurchase';
 import { UserIdentity } from '../../models/UserIdentity';
-import { UserCredential } from '../../models/UserCredential';
 
 
 /**

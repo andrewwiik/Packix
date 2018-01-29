@@ -14,8 +14,8 @@ export interface PackageFileInterface {
   "url": string;
   "container": string;
   "date"?: string;
-  "id"?: any;
   "packageVersionId"?: any;
+  "id"?: any;
   packageVersion?: PackageVersion;
 }
 
@@ -29,8 +29,8 @@ export class PackageFile implements PackageFileInterface {
   "url": string;
   "container": string;
   "date": string;
-  "id": any;
   "packageVersionId": any;
+  "id": any;
   packageVersion: PackageVersion;
   constructor(data?: PackageFileInterface) {
     Object.assign(this, data);
@@ -101,12 +101,12 @@ export class PackageFile implements PackageFileInterface {
           name: 'date',
           type: 'string'
         },
-        "id": {
-          name: 'id',
-          type: 'any'
-        },
         "packageVersionId": {
           name: 'packageVersionId',
+          type: 'any'
+        },
+        "id": {
+          name: 'id',
           type: 'any'
         },
       },

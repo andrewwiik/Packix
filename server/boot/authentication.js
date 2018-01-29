@@ -3,4 +3,9 @@ module.exports = function enableAuthentication(app) {
   app.enableAuth({ datasource: 'db' });
   // app.middleware('session:before',
 
+
+  // console.log(app.models.UserProfile.acls)
+
+  console.log(app.models.UserIdentity.settings.acls);
+
 };

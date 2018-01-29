@@ -11,6 +11,8 @@ import {RemarkPlugin} from "../../../helpers/remark-plugin";
 import {ScrollablePlugin} from "../../../helpers/plugins/scrollable";
 import {ActivatedRoute} from "@angular/router";
 import {QuillEditorComponent} from "ngx-quill";
+import {PackageScreenshotApi} from "../../../shared/sdk/services/custom/PackageScreenshot";
+import {PackageScreenshot} from "../../../shared/sdk/models/PackageScreenshot";
 
 @Component({
     selector: 'package-view',
@@ -22,18 +24,33 @@ export class PackageViewComponent implements AfterViewInit, OnDestroy{
   public package: Package;
   public packageID: string;
   public detailedPackageDescription: any;
+  public screenshotUploader: FileUploader;
 
   @ViewChild('editor') editor: QuillEditorComponent;
 
   constructor(
     private packageAPI: PackageApi,
     private auth: LoopBackAuth,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private screenshotAPI: PackageScreenshotApi
   ) {
+
+    this.screenshotUploader = new FileUploader({
+      autoUpload: true,
+      authToken: this.auth.getAccessTokenId(),
+      url: LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() + "/Packages/screenshots/upload",
+      isHTML5: true
+    });
+
+    this.screenshotUploader.onCompleteItem = this.screenshotUploadComplete;
+    this.screenshotUploader['delegate'] = this;
 
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.packageID = params['id'];
+        this.screenshotUploader.setOptions({
+          url: LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() + "/Packages/" + this.packageID + "/screenshots/upload"
+        });
         this.loadPackageData();
       }
     });
@@ -45,7 +62,8 @@ export class PackageViewComponent implements AfterViewInit, OnDestroy{
     this.packageAPI.findById(this.packageID,{
       include: [
         {versions: 'file'},
-        'latestVersion'
+        'latestVersion',
+        'downloadRestrictions'
       ]
     })
       .subscribe((packageObject : Package) => {
@@ -63,6 +81,29 @@ export class PackageViewComponent implements AfterViewInit, OnDestroy{
     // jQuery('body').addClass('page-aside-left');
     // jQuery('body').addClass('page-aside-scroll');
     jQuery('body').addClass('app-packages');
+  }
+
+  screenshotUploadComplete(item:any, response:any, status:number, headers:any) {
+    let packageData: Package = new Package(JSON.parse(response));
+
+    console.log(packageData);
+    console.log(this);
+    console.log(item);
+
+    let queue: Array<any> = item.uploader.queue;
+    queue.splice( queue.indexOf(item), 1 );
+
+    this['delegate'].package['screenshots'] = packageData.screenshots;
+  }
+
+  removeScreenshot(screenshot: any) {
+    console.log(screenshot.id);
+    console.log(this.screenshotAPI);
+    this.screenshotAPI.deleteById(screenshot.id)
+      .subscribe((thing: any) => {
+        console.log(thing);
+      });
+    this.package['screenshots'].splice(  this.package['screenshots'].indexOf(screenshot), 1 );
   }
 
 

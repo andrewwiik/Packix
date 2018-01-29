@@ -1,9 +1,10 @@
 // import React from 'react';
 import React, { Component as ReactComponent } from 'react';
 import Head from '../components/head';
+import Link from 'next/link';
 import DataPrefetchLink from 'data-prefetch-link'
 import Router from 'next/router'
-import Moment from 'react-moment';
+// import Moment from 'react-moment';
 //import SDK, { Component } from '../shared/sdk/';
 //import * as Services from './../shared/sdk/services';
 
@@ -22,13 +23,22 @@ class Index extends ReactComponent {
       // console.log(req.params.id);
       // console.log(req.query["package"]);
       this['PackageApi'] = new Services['PackageApi']();
+
+    //
+    // this.PackageApi.find({
+    //   sort: 'name ASC',
+    //   include: ['latestVersion', 'section']
+    // }).subscribe((data)  => {
+    //  // console.log(data);
+    // });
+
       const packages = await this.PackageApi.find({
         sort: 'name ASC',
         include: ['latestVersion', 'section']
       }).first().toPromise();
 
       for (var packageObj of packages) {
-       packageObj['descriptionURL'] = "/package/" + packageObj["identifier"];
+       packageObj['descriptionURL'] = "/package/" + packageObj["identifier"] + '/';
         //Router.prefetch(packageObj['descriptionURL'])};
       }
 
@@ -87,7 +97,7 @@ class Index extends ReactComponent {
             return (
               <div className="package-container" key={index}>
                 <panel>
-                  <DataPrefetchLink href={packageObj.descriptionURL}>
+                  <a href={'/package/' + packageObj.identifier + '/'} as={packageObj.descriptionURL}>
                     <panel-body>
                       <h3 style={{marginTop: '-4px'}}>{packageObj.name}</h3>
                       <h5>
@@ -95,7 +105,7 @@ class Index extends ReactComponent {
                         <span style={{float: 'right', color: '#777', fontSize: 'smaller', paddingTop: '3px'}}>{packageObj.latestVersion.version}</span>
                       </h5>
                     </panel-body>
-                  </DataPrefetchLink>
+                  </a>
                 </panel>
               </div>
             )

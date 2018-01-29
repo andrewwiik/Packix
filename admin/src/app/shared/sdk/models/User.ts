@@ -1,11 +1,7 @@
 /* tslint:disable */
 import {
-  AccessToken,
-  Device,
   Package,
-  PackagePurchase,
-  UserIdentity,
-  UserCredential
+  UserIdentity
 } from '../index';
 
 declare var Object: any;
@@ -16,13 +12,13 @@ export interface UserInterface {
   "emailVerified"?: boolean;
   "id"?: any;
   "password"?: string;
-  accessTokens?: AccessToken[];
-  devices?: Device[];
+  accessTokens?: any[];
+  devices?: any[];
   packages?: Package[];
-  purchases?: PackagePurchase[];
+  purchases?: any[];
   profile?: UserIdentity;
   identities?: UserIdentity[];
-  credentials?: UserCredential[];
+  credentials?: any[];
 }
 
 export class User implements UserInterface {
@@ -32,13 +28,13 @@ export class User implements UserInterface {
   "emailVerified": boolean;
   "id": any;
   "password": string;
-  accessTokens: AccessToken[];
-  devices: Device[];
+  accessTokens: any[];
+  devices: any[];
   packages: Package[];
-  purchases: PackagePurchase[];
+  purchases: any[];
   profile: UserIdentity;
   identities: UserIdentity[];
-  credentials: UserCredential[];
+  credentials: any[];
   constructor(data?: UserInterface) {
     Object.assign(this, data);
   }
@@ -100,16 +96,16 @@ export class User implements UserInterface {
       relations: {
         accessTokens: {
           name: 'accessTokens',
-          type: 'AccessToken[]',
-          model: 'AccessToken',
+          type: 'any[]',
+          model: '',
           relationType: 'hasMany',
                   keyFrom: 'id',
           keyTo: 'userId'
         },
         devices: {
           name: 'devices',
-          type: 'Device[]',
-          model: 'Device',
+          type: 'any[]',
+          model: '',
           relationType: 'hasMany',
                   keyFrom: 'id',
           keyTo: 'accountId'
@@ -124,8 +120,8 @@ export class User implements UserInterface {
         },
         purchases: {
           name: 'purchases',
-          type: 'PackagePurchase[]',
-          model: 'PackagePurchase',
+          type: 'any[]',
+          model: '',
           relationType: 'hasMany',
                   keyFrom: 'id',
           keyTo: 'accountId'
@@ -148,8 +144,8 @@ export class User implements UserInterface {
         },
         credentials: {
           name: 'credentials',
-          type: 'UserCredential[]',
-          model: 'UserCredential',
+          type: 'any[]',
+          model: '',
           relationType: 'hasMany',
                   keyFrom: 'id',
           keyTo: 'userId'

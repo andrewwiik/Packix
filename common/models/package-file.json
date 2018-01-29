@@ -45,6 +45,10 @@
     "packageVersionId": {
       "type": "string",
       "index": true
+    },
+    "fileDownloadId": {
+      "type": "string",
+      "required": true
     }
   },
   "validations": [],
@@ -63,9 +67,16 @@
       "permission": "DENY"
     },
     {
-      "accessType": "READ",
+      "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
+      "permission": "DENY",
+      "property": "file"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "admin",
       "permission": "ALLOW"
     }
   ],

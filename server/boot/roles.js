@@ -51,25 +51,65 @@ module.exports = function(app) {
     var userId = context.accessToken.userId;
     if (!userId) {
       // A: No, user is NOT logged in: callback with FALSE
-      return cb(null, false);
+      return process.nextTick(() => cb(null, false));
     }
 
     UserIdentity.findOne({
       where: {
         userId: userId
-      }
+      },
+      include: ['user']
     }, function(error, foundUser) {
       if (error) {
+        console.log(error);
         return cb(null, false);
       }
 
+      if (foundUser && foundUser.toJSON) {
+        foundUser = foundUser.toJSON();
+      }
       if (foundUser) {
-        //console.log(foundUser);
-        var emails = foundUser.profile.emails;
-        for (var x = 0; x < emails.length; x++) {
-          if (emails[x].value.indexOf(process.env['ADMIN_EMAIL']) !== -1) {
-            return cb(null, true);
+        let email = '';
+        if (foundUser.provider === 'patreon') {
+          if (foundUser.profile) {
+           // console.log(foundUser.profile.attributes);
+            if (foundUser.profile.email && foundUser.profile.email.length > 0) {
+              email = foundUser.profile.email;
+            } else if (foundUser.profile.attributes &&
+                foundUser.profile.attributes.email &&
+                foundUser.profile.attributes.email.length > 0) {
+              email = foundUser.profile.attributes.email;
+            }
+          } else {
+            if (foundUser['_json'] &&
+                foundUser['_json']['_attributes'] &&
+                foundUser['_json']['_attributes']['email'] &&
+                foundUser['_json']['_attributes']['email'].length > 0) {
+              email = foundUser['_json']['_attributes']['email'];
+            }
           }
+        } else if (foundUser.provider === 'google') {
+          let emails = foundUser.emails;
+          for (let emailObj of foundUser.profile.emails) {
+            if (emailObj['type'] === 'account' && emailObj['value'] && emailObj['value'].length > 0) {
+              email = emailObj['value'];
+              break;
+            }
+          }
+        } else if (foundUser.provider === 'facebook') {
+          let emails = foundUser.emails;
+          for (let emailObj of emails) {
+            if (emailObj['value'] && emailObj['value'].length > 0) {
+              email = emailObj['value'];
+              break;
+            }
+          }
+        }
+
+        console.log('user email: ' + email);
+        if (email.indexOf(process.env['ADMIN_EMAIL']) !== -1) {
+          console.log('admin');
+          return cb(null, true);
         }
       }
 

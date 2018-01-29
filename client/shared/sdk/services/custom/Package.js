@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/Rx';
 import { Package } from '../../models/Package';
 import { PackageVersion } from '../../models/PackageVersion';
 import { Section } from '../../models/Section';
+import { PackageVersionReview } from '../../models/PackageVersionReview';
 
 
 /**
@@ -129,6 +130,39 @@ export class PackageApi extends BaseLoopBackApi {
   }
 
   /**
+   * Fetches belongsTo relation latestVersion.
+   *
+   * @param {any} id Package id
+   *
+   * @param {boolean} refresh 
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * <em>
+   * (The remote method definition does not provide any description.
+   * This usually means the response is a `Package` object.)
+   * </em>
+   */
+   getLatestVersion(id, refresh, customHeaders) {
+    
+    let _method = "GET";
+    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/Packages/:id/latestVersion";
+    let _routeParams = {
+      id: id
+    };
+    let _postBody = {};
+    let _urlParams = {};
+    
+    
+    if (typeof refresh !== 'undefined' && refresh !== null) _urlParams.refresh = refresh;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
    * Fetches belongsTo relation section.
    *
    * @param {any} id Package id
@@ -157,108 +191,6 @@ export class PackageApi extends BaseLoopBackApi {
     
     
     if (typeof refresh !== 'undefined' && refresh !== null) _urlParams.refresh = refresh;
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Find a related item by id for downloads.
-   *
-   * @param {any} id Package id
-   *
-   * @param {any} fk Foreign key for downloads
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * <em>
-   * (The remote method definition does not provide any description.
-   * This usually means the response is a `Package` object.)
-   * </em>
-   */
-   findByIdDownloads(id, fk, customHeaders) {
-    
-    let _method = "GET";
-    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/Packages/:id/downloads/:fk";
-    let _routeParams = {
-      id: id,
-      fk: fk
-    };
-    let _postBody = {};
-    let _urlParams = {};
-    
-    
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Delete a related item by id for downloads.
-   *
-   * @param {any} id Package id
-   *
-   * @param {any} fk Foreign key for downloads
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * This method returns no data.
-   */
-   destroyByIdDownloads(id, fk, customHeaders) {
-    
-    let _method = "DELETE";
-    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/Packages/:id/downloads/:fk";
-    let _routeParams = {
-      id: id,
-      fk: fk
-    };
-    let _postBody = {};
-    let _urlParams = {};
-    
-    
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Update a related item by id for downloads.
-   *
-   * @param {any} id Package id
-   *
-   * @param {any} fk Foreign key for downloads
-   *
-   * @param {object} data Request data.
-   *
-   * This method expects a subset of model properties as request parameters.
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * <em>
-   * (The remote method definition does not provide any description.
-   * This usually means the response is a `Package` object.)
-   * </em>
-   */
-   updateByIdDownloads(id, fk, data, customHeaders) {
-    
-    let _method = "PUT";
-    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/Packages/:id/downloads/:fk";
-    let _routeParams = {
-      id: id,
-      fk: fk
-    };
-    let _postBody = {
-      data: data
-    };
-    let _urlParams = {};
-    
-    
     let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }
@@ -351,6 +283,108 @@ export class PackageApi extends BaseLoopBackApi {
     let _method = "PUT";
     let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/Packages/:id/purchases/:fk";
+    let _routeParams = {
+      id: id,
+      fk: fk
+    };
+    let _postBody = {
+      data: data
+    };
+    let _urlParams = {};
+    
+    
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * Find a related item by id for reviews.
+   *
+   * @param {any} id Package id
+   *
+   * @param {any} fk Foreign key for reviews
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * <em>
+   * (The remote method definition does not provide any description.
+   * This usually means the response is a `Package` object.)
+   * </em>
+   */
+   findByIdReviews(id, fk, customHeaders) {
+    
+    let _method = "GET";
+    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/Packages/:id/reviews/:fk";
+    let _routeParams = {
+      id: id,
+      fk: fk
+    };
+    let _postBody = {};
+    let _urlParams = {};
+    
+    
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * Delete a related item by id for reviews.
+   *
+   * @param {any} id Package id
+   *
+   * @param {any} fk Foreign key for reviews
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * This method returns no data.
+   */
+   destroyByIdReviews(id, fk, customHeaders) {
+    
+    let _method = "DELETE";
+    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/Packages/:id/reviews/:fk";
+    let _routeParams = {
+      id: id,
+      fk: fk
+    };
+    let _postBody = {};
+    let _urlParams = {};
+    
+    
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * Update a related item by id for reviews.
+   *
+   * @param {any} id Package id
+   *
+   * @param {any} fk Foreign key for reviews
+   *
+   * @param {object} data Request data.
+   *
+   * This method expects a subset of model properties as request parameters.
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * <em>
+   * (The remote method definition does not provide any description.
+   * This usually means the response is a `Package` object.)
+   * </em>
+   */
+   updateByIdReviews(id, fk, data, customHeaders) {
+    
+    let _method = "PUT";
+    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/Packages/:id/reviews/:fk";
     let _routeParams = {
       id: id,
       fk: fk
@@ -494,134 +528,6 @@ export class PackageApi extends BaseLoopBackApi {
   }
 
   /**
-   * Queries downloads of Package.
-   *
-   * @param {any} id Package id
-   *
-   * @param {object} filter 
-   *
-   * @returns {object[]} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * <em>
-   * (The remote method definition does not provide any description.
-   * This usually means the response is a `Package` object.)
-   * </em>
-   */
-   getDownloads(id, filter, customHeaders) {
-    
-    let _method = "GET";
-    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/Packages/:id/downloads";
-    let _routeParams = {
-      id: id
-    };
-    let _postBody = {};
-    let _urlParams = {};
-    
-    
-    if (typeof filter !== 'undefined' && filter !== null) _urlParams.filter = filter;
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Creates a new instance in downloads of this model.
-   *
-   * @param {any} id Package id
-   *
-   * @param {object} data Request data.
-   *
-   * This method expects a subset of model properties as request parameters.
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * <em>
-   * (The remote method definition does not provide any description.
-   * This usually means the response is a `Package` object.)
-   * </em>
-   */
-   createDownloads(id, data, customHeaders) {
-    
-    let _method = "POST";
-    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/Packages/:id/downloads";
-    let _routeParams = {
-      id: id
-    };
-    let _postBody = {
-      data: data
-    };
-    let _urlParams = {};
-    
-    
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Deletes all downloads of this model.
-   *
-   * @param {any} id Package id
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * This method returns no data.
-   */
-   deleteDownloads(id, customHeaders) {
-    
-    let _method = "DELETE";
-    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/Packages/:id/downloads";
-    let _routeParams = {
-      id: id
-    };
-    let _postBody = {};
-    let _urlParams = {};
-    
-    
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Counts downloads of Package.
-   *
-   * @param {any} id Package id
-   *
-   * @param {object} where Criteria to match model instances
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * Data properties:
-   *
-   *  - `count` – `{number}` - 
-   */
-   countDownloads(id, where, customHeaders) {
-    
-    let _method = "GET";
-    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/Packages/:id/downloads/count";
-    let _routeParams = {
-      id: id
-    };
-    let _postBody = {};
-    let _urlParams = {};
-    
-    
-    if (typeof where !== 'undefined' && where !== null) _urlParams.where = where;
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
    * Queries purchases of Package.
    *
    * @param {any} id Package id
@@ -737,6 +643,134 @@ export class PackageApi extends BaseLoopBackApi {
     let _method = "GET";
     let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/Packages/:id/purchases/count";
+    let _routeParams = {
+      id: id
+    };
+    let _postBody = {};
+    let _urlParams = {};
+    
+    
+    if (typeof where !== 'undefined' && where !== null) _urlParams.where = where;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * Queries reviews of Package.
+   *
+   * @param {any} id Package id
+   *
+   * @param {object} filter 
+   *
+   * @returns {object[]} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * <em>
+   * (The remote method definition does not provide any description.
+   * This usually means the response is a `Package` object.)
+   * </em>
+   */
+   getReviews(id, filter, customHeaders) {
+    
+    let _method = "GET";
+    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/Packages/:id/reviews";
+    let _routeParams = {
+      id: id
+    };
+    let _postBody = {};
+    let _urlParams = {};
+    
+    
+    if (typeof filter !== 'undefined' && filter !== null) _urlParams.filter = filter;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * Creates a new instance in reviews of this model.
+   *
+   * @param {any} id Package id
+   *
+   * @param {object} data Request data.
+   *
+   * This method expects a subset of model properties as request parameters.
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * <em>
+   * (The remote method definition does not provide any description.
+   * This usually means the response is a `Package` object.)
+   * </em>
+   */
+   createReviews(id, data, customHeaders) {
+    
+    let _method = "POST";
+    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/Packages/:id/reviews";
+    let _routeParams = {
+      id: id
+    };
+    let _postBody = {
+      data: data
+    };
+    let _urlParams = {};
+    
+    
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * Deletes all reviews of this model.
+   *
+   * @param {any} id Package id
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * This method returns no data.
+   */
+   deleteReviews(id, customHeaders) {
+    
+    let _method = "DELETE";
+    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/Packages/:id/reviews";
+    let _routeParams = {
+      id: id
+    };
+    let _postBody = {};
+    let _urlParams = {};
+    
+    
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * Counts reviews of Package.
+   *
+   * @param {any} id Package id
+   *
+   * @param {object} where Criteria to match model instances
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * Data properties:
+   *
+   *  - `count` – `{number}` - 
+   */
+   countReviews(id, where, customHeaders) {
+    
+    let _method = "GET";
+    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/Packages/:id/reviews/count";
     let _routeParams = {
       id: id
     };
@@ -881,6 +915,43 @@ export class PackageApi extends BaseLoopBackApi {
   }
 
   /**
+   * Uploads a Screen Shot for the Package
+   *
+   * @param {any} id Package id
+   *
+   * @param {object} options 
+   *
+   * @param {object} data Request data.
+   *
+   * This method does not accept any data. Supply an empty object.
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * <em>
+   * (The remote method definition does not provide any description.
+   * This usually means the response is a `Package` object.)
+   * </em>
+   */
+   uploadScreenshot(id, options, customHeaders) {
+    
+    let _method = "POST";
+    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/Packages/:id/screenshots/upload";
+    let _routeParams = {
+      id: id
+    };
+    let _postBody = {};
+    let _urlParams = {};
+    
+    
+    if (typeof options !== 'undefined' && options !== null) _urlParams.options = options;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
    * Creates a new instance in versions of this model.
    *
    * @param {any} id Package id
@@ -917,42 +988,6 @@ export class PackageApi extends BaseLoopBackApi {
   }
 
   /**
-   * Creates a new instance in downloads of this model.
-   *
-   * @param {any} id Package id
-   *
-   * @param {object} data Request data.
-   *
-   * This method expects a subset of model properties as request parameters.
-   *
-   * @returns {object[]} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * <em>
-   * (The remote method definition does not provide any description.
-   * This usually means the response is a `Package` object.)
-   * </em>
-   */
-   createManyDownloads(id, data, customHeaders) {
-    
-    let _method = "POST";
-    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/Packages/:id/downloads";
-    let _routeParams = {
-      id: id
-    };
-    let _postBody = {
-      data: data
-    };
-    let _urlParams = {};
-    
-    
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
    * Creates a new instance in purchases of this model.
    *
    * @param {any} id Package id
@@ -975,6 +1010,42 @@ export class PackageApi extends BaseLoopBackApi {
     let _method = "POST";
     let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/Packages/:id/purchases";
+    let _routeParams = {
+      id: id
+    };
+    let _postBody = {
+      data: data
+    };
+    let _urlParams = {};
+    
+    
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * Creates a new instance in reviews of this model.
+   *
+   * @param {any} id Package id
+   *
+   * @param {object} data Request data.
+   *
+   * This method expects a subset of model properties as request parameters.
+   *
+   * @returns {object[]} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * <em>
+   * (The remote method definition does not provide any description.
+   * This usually means the response is a `Package` object.)
+   * </em>
+   */
+   createManyReviews(id, data, customHeaders) {
+    
+    let _method = "POST";
+    let _url = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/Packages/:id/reviews";
     let _routeParams = {
       id: id
     };

@@ -107,10 +107,18 @@ input, select {
   font-family:'SF Pro Display';
   font-style:normal;
   font-weight:400;
-  src:local('â˜ºï¸Ž'), url(/assets/fonts/sf-pro-display_regular.woff2") format("woff2");
-  }
+  src:local('â˜ºï¸Ž'), url("/assets/fonts/sf-pro-display_regular.woff2") format("woff2");
+}
 
-  @font-face {
+@font-face {
+  font-family:'SF Pro Text';
+  font-style:normal;
+  font-weight:800;
+  src:local('â˜ºï¸Ž'), url("/assets/fonts/sf-pro-text_heavy.woff2") format("woff2");
+  /* (C) 2015 Apple Inc. All rights reserved.*/
+}
+
+@font-face {
   font-family:'SF Pro Display';
   font-style:normal;
   font-weight:900;
@@ -129,6 +137,20 @@ input, select {
   font-style:normal;
   font-weight:800;
   src:local('â˜ºï¸Ž'), url("/assets/fonts/sf-pro-display_heavy.woff2") format("woff2");
+}
+
+@font-face {
+  font-family:'SF Pro Text';
+  font-style:normal;
+  font-weight:600;
+  src:local('â˜ºï¸Ž'), url("/assets/fonts/sf-pro-text_semibold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family:'SF Pro Text';
+  font-style:normal;
+  font-weight:400;
+  src:local('☺︎'), url("/assets/fonts/sf-pro-text_regular.woff2") format("woff2");
 }
 
 .ios9-lightblue {
@@ -167,7 +189,6 @@ body {
   -webkit-touch-callout:none;
   -webkit-user-select:text;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
-  width: device-width;
   font-family: ".SFNSText-Medium", -apple-system, "Helvetica Neue", "Lucida Grande", sans-serif;
   background-color: #f4f4f4;
   min-font-size: 13px;
@@ -175,17 +196,19 @@ body {
   font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
   font-weight:500;
   font-size:15px;
+  width: 100%;
+
 }
 body panel {
   display: block;
-  width: 100%;
   margin: 0;
   border:0;
   margin-top:9px;
   margin-bottom:28px;
+  width: 100%;
 }
 
-body panel > panel-body {
+body panel panel-body {
   margin-left: 14px;
   margin-right: 14px;
   background-color: white;
@@ -200,7 +223,7 @@ body panel > panel-body {
 }
 
 
-body panel > panel-header {
+body panel  panel-header {
   margin: 12px;
   margin-left: 12px;
   margin-right: 12px;
@@ -214,11 +237,11 @@ body panel > panel-header {
   color: #111;
 }
 
-body panel > panel-header > label {
+body panel  panel-header  label {
   font-weight: 800 !important;
 }
 
-body panel > panel-body > table > tbody > tr > td {
+body panel  panel-body  table  tbody  tr  td {
   font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
   font-weight: 700;
   font-size: 15px;
@@ -232,11 +255,11 @@ body panel > panel-body > table > tbody > tr > td {
 
 }
 
-// body panel > panel-body > table > tbody > tr {
+// body panel panel-body table > tbody > tr {
    //    margin: 5px 0px;
    // }
 
-body panel > panel-body > table > tbody > tr > td:nth-child(2) {
+body panel panel-body table > tbody > tr > td:nth-child(2) {
   color: #777;
   float: right;
   font-weight: 500;
@@ -249,27 +272,27 @@ body panel > panel-body > table > tbody > tr > td:nth-child(2) {
   color: #888;
 }
 
-body panel > panel-body > table > tbody > tr:first-child td {
+body panel panel-body > table > tbody > tr:first-child td {
   margin-top:0px;
 }
 
-body panel > panel-body > table > tbody > tr:last-child td {
+body panel panel-body > table > tbody > tr:last-child td {
   margin-bottom:0px;
 }
 
-body panel > panel-body > table {
+body panel panel-body > table {
   width: 100%;
 }
 
-body panel > panel-body > table > tbody > tr {
+body panel panel-body > table > tbody > tr {
   border-bottom: 0.5px solid #cacaca;
 }
 
-body panel > panel-body > table > tbody > tr:last-child {
+body panel panel-body > table > tbody > tr:last-child {
   border-bottom: none;
 }
 
-body panel > panel-body > ul {
+body panel panel-body > ul {
   padding: 0px 17px;
   line-height: 1.5;
   font-weight: 500;
@@ -384,4 +407,8 @@ body.pinstripe {
 body div.center {
   text-align:left;
   margin:15px;
+}
+
+panel a {
+  text-decoration: none;
 }

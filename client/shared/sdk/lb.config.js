@@ -24,7 +24,7 @@ export class LoopBackConfig {
   static authPrefix = '';
   static debug = true;
   static filterOn = 'headers';
-  static secure = false;
+  static secure = true;
 
   static setApiVersion(version = 'api') {
     LoopBackConfig.version = version;
@@ -34,7 +34,7 @@ export class LoopBackConfig {
     return LoopBackConfig.version;
   }
 
-  static setBaseURL(url = 'https://packix.ioscreatix.com/') {
+  static setBaseURL(url = '/') {
     LoopBackConfig.path = url;
   }
 

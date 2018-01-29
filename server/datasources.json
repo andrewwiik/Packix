@@ -15,7 +15,7 @@
     "password": "${MONGODB_PASSWORD}",
     "name": "files",
     "user": "${MONGODB_USERNAME}",
-    "connector": "loopback-component-storage-deb-gridfs"
+    "connector": "loopback-component-storage-mongo-gridfs"
   },
   "paypal": {
     "name": "paypal",

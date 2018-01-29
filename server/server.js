@@ -1,5 +1,13 @@
 'use strict';
 
+const envVariables = require('../environment.json')['backend_packix'];
+
+for (var key in envVariables) {
+  if (envVariables.hasOwnProperty(key)) {
+    process.env[key] = envVariables[key];
+  }
+}
+
 const loopback = require('loopback');
 const boot = require('loopback-boot');
 const cookieDeMangle = require('cookie');
@@ -215,7 +223,7 @@ app.start = () => {
 app.get('/api/auth/success', function(req, res, next) {
  // console.log(req);
   //console.log(req.accessToken);
- // console.log(req.user);
+  // console.log(req.getUser());
   // var tokenId = req.cookies.access_token;
   // var userId = req.cookies.user_dd;
  // console.log(req.session);
@@ -228,7 +236,7 @@ app.get('/api/auth/success', function(req, res, next) {
       res.redirect(redirectURL);
       // next();
     } else {
-      res.redirect('https://' + baseURL + '/' + tokenId + '/' + userId);
+      res.redirect('https://' + baseURL + '/');
       // next();
       res.redirect('/');
     }
@@ -382,12 +390,20 @@ app.use(bodyParser.urlencoded({
 }));
 
 
-
 // passportConfigurator.init();
 // Load the provider configurations
 var config = {};
+var getProvidersConfig;
+getProvidersConfig = require(__dirname + '/config/providers.js');
+// try {
+//   getProvidersConfig = require(path.resolve(__dirname, 'config/providers.js'));
+// } catch (e) {
+//   if (e.code !== 'MODULE_NOT_FOUND') {
+//     throw e;
+//   }
+// }
+
 try {
-  const getProvidersConfig = require('./config/providers.js');
   config = getProvidersConfig(app);
 } catch (err) {
   console.error(err);
